@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Engine\Interfaces\" />
+    <Folder Include="Unit_Test\" />
+    <Folder Include="Config\" />
+    <Folder Include="Users\" />
+  </ItemGroup>
+
 </Project>
