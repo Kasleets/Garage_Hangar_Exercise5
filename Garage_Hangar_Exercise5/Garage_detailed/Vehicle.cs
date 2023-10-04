@@ -47,6 +47,29 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             FuelType = fuelType;
             Brand = brand;
         }
-    }
 
+        public double Cost
+        {
+            get
+            {
+                if (!ExitTime.HasValue)
+                {
+                    return 0; 
+                    throw new ArgumentException($"This vehicle has not left the parking yet"); // Not yet checked out
+                }
+
+                var timeParked = ExitTime.Value - EntryTime;
+                return CalculateBillingAmount(timeParked);
+
+            }
+
+
+        }
+
+        public virtual double CalculateBillingAmount(TimeSpan timeParked)     // virtual = can be overridden in derived classes
+        {
+            return timeParked.TotalHours * 50; // 50 kr per hour for now
+        }
+
+    }
 }
