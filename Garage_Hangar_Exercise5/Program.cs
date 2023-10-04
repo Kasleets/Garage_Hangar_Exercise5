@@ -1,24 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.Configuration.Binder;
-
+﻿
+using Garage_Hangar_Exercise5.Garage_detailed;
 
 namespace Garage_Hangar_Exercise5
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World! We're going to create a hangar application.");
-
-            /*
             var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            var configuration = builder.Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            int garageCapacity = configuration.GetValue<int>("GarageSettings:Capacity");
-            */
+            IConfigurationRoot configuration = builder.Build();
+
+            Vehicle.BillingRate = configuration.GetValue<double>("BillingRate");
+
 
         }
     }
