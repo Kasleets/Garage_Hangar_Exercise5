@@ -16,7 +16,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Interfaces
         string FuelType { get; set; }
         string Brand { get; set; }
 
-        //Todo: figure out how to enforce giving the cost to customer TimeSpan CalculateBillingAmount(TimeSpan timeParked);
+        //Todo: figure out how to enforce giving the cost to customer
+        //TimeSpan CalculateBillingAmount(TimeSpan timeParked);
 
 
     }

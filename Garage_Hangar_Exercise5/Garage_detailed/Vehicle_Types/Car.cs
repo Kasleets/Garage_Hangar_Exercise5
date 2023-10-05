@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bogus.DataSets;
+using Garage_Hangar_Exercise5.Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -37,11 +39,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                 double chargingAmount = timeParked.TotalHours * Vehicle.ElectricChargeRate;
                 baseAmount += chargingAmount;
             }
+
             return baseAmount;
         }
-
-
-
 
     }
 }

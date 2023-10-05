@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Garage_Hangar_Exercise5.Engine;
+using Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,12 +66,19 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             }
         }
 
-
+        // This method is virtual, so that it can be overridden in derived classes
         public virtual double CalculateBillingAmount(TimeSpan timeParked)
         {
+            
             return timeParked.TotalHours * BillingRate;
         }
 
+        // Keeping the logging in the base class, since it's the same for all vehicles
+        public virtual void LogBilling(TimeSpan timeParked)
+        {
+            var amount = CalculateBillingAmount(timeParked);
+            Logger.LogAccounting($"Vehicle with license plate {LicensePlate} was billed {amount}.");
+        }
 
     }
 }
