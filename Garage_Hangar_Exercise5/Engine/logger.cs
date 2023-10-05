@@ -25,8 +25,8 @@ namespace Garage_Hangar_Exercise5.Engine
 }
 
 /* *
- * Logger.LogMovement($"Vehicle with license plate {vehicle.LicensePlate} entered the garage.");
- * Logger.LogMovement($"Vehicle with license plate {vehicle.LicensePlate} left the garage.");
+ * Logger.LogMovement($"Vehicle with license plate {vehicle.LicensePlate} entered the garage at {vehicle.EntryTime}.");
+ * Logger.LogMovement($"Vehicle with license plate {vehicle.LicensePlate} exited the garage at {vehicle.ExitTime}.");
  * Logger.LogAccounting($"Vehicle with license plate {vehicle.LicensePlate} was billed {amount}.");
  * 
  * */
