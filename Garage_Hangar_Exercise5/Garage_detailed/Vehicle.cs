@@ -15,6 +15,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public double EngineVolume { get; set; }
         public string FuelType { get; set; }
         public string Brand { get; set; }
+        public static double BillingRate { get; set; } = 30; // default value, will be overridden from appsettings.json
+        public static double ElectricChargeRate { get; set; } = 10;  // Additional rate for electric vehicles
 
         protected Vehicle(string licensePlate,
                           DateTime entryTime,
