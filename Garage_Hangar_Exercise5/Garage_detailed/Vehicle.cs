@@ -19,6 +19,13 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public string Brand { get; set; }
         public static double BillingRate { get; set; } = 30; // default value, will be overridden from appsettings.json
         public static double ElectricChargeRate { get; set; } = 10;  // Additional rate for electric vehicles
+        public static double BillingRateBoat { get; set; } = 50; 
+        public static double BillingRateAirplane { get; set; } = 100;
+        public static double BillingRateBus { get; set; } = 80; 
+        public static double BillingRateCar { get; set; } = 30; 
+        public static double BillingRateMotorcycle { get; set; } = 20; 
+        public static double BillingRateTruck { get; set; } = 40; 
+        public static double BillingRateBicycle { get; set; } = 10;  
 
         protected Vehicle(string licensePlate,
                           DateTime entryTime,

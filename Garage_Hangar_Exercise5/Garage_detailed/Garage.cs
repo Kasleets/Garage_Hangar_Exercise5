@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
-    public class Garage<T> where T : Vehicle
+    class Garage<T> where T : Vehicle
     {
+
         private T[] vehicles;
+
         public Garage(int capacity)
         {
+
             vehicles = new T[capacity];
         }
 
