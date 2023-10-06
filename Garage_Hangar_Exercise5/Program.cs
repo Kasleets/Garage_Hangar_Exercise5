@@ -11,6 +11,8 @@ using System.IO;
 using Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types;
 using Garage_Hangar_Exercise5.Engine;
 
+// ...
+
 namespace Garage_Hangar_Exercise5
 {
     class Program
@@ -24,15 +26,22 @@ namespace Garage_Hangar_Exercise5
 
             IConfigurationRoot configuration = builder.Build();
 
-            // Read the billing rate and capacity from the appsettings.json file
-            double billingRate = configuration.GetValue<double>("GarageSettings:BillingRate");
+            // Load billing rates into a dictionary
+            var billingRates = configuration
+                .GetSection("GarageSettings:BillingRates")
+                .Get<Dictionary<string, double>>();
+
+            // Set the default billing rate for the Vehicle class
+            if (billingRates.ContainsKey("Default"))
+            {
+                Vehicle.BillingRate = billingRates["Default"];
+            }
+
+            // Print the default billing rate
+            Console.WriteLine($"Default billing rate is: {Vehicle.BillingRate}");
+
+            // Read the garage capacity from the appsettings.json file
             int garageCapacity = configuration.GetValue<int>("GarageSettings:Capacity");
-
-            // Set the billing rate for the Vehicle class
-            Vehicle.BillingRate = billingRate;
-
-            // Print the billing rate
-            Console.WriteLine($"Billing rate is: {billingRate}");
 
             // Create an instance of the garage with the capacity
             Garage<Vehicle> garage = new Garage<Vehicle>(garageCapacity);

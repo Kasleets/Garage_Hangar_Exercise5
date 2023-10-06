@@ -17,15 +17,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public double EngineVolume { get; set; }
         public string FuelType { get; set; }
         public string Brand { get; set; }
-        public static double BillingRate { get; set; } = 30; // default value, will be overridden from appsettings.json
-        public static double ElectricChargeRate { get; set; } = 10;  // Additional rate for electric vehicles
-        public static double BillingRateBoat { get; set; } = 50; 
-        public static double BillingRateAirplane { get; set; } = 100;
-        public static double BillingRateBus { get; set; } = 80; 
-        public static double BillingRateCar { get; set; } = 30; 
-        public static double BillingRateMotorcycle { get; set; } = 20; 
-        public static double BillingRateTruck { get; set; } = 40; 
-        public static double BillingRateBicycle { get; set; } = 10;  
+        public static double BillingRate { get; set; } = 30; // Default rate
+        public static Dictionary<string, double> BillingRates { get; set; } = new Dictionary<string, double>();
+
 
         protected Vehicle(string licensePlate,
                           DateTime entryTime,
@@ -76,9 +70,24 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         // This method is virtual, so that it can be overridden in derived classes
         public virtual double CalculateBillingAmount(TimeSpan timeParked)
         {
-            
-            return timeParked.TotalHours * BillingRate;
+            double rate;
+            if (BillingRates.ContainsKey(this.GetType().Name))
+            {
+                rate = BillingRates[this.GetType().Name];
+            }
+            else if (BillingRates.ContainsKey("Default"))
+            {
+                rate = BillingRates["Default"];
+            }
+            else
+            {
+                throw new InvalidOperationException("Default billing rate is not set.");
+            }
+
+            return timeParked.TotalHours * rate;
         }
+
+
 
         // Keeping the logging in the base class, since it's the same for all vehicles
         public virtual void LogBilling(TimeSpan timeParked)

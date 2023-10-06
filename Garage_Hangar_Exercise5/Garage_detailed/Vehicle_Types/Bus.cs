@@ -30,7 +30,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
         public override double CalculateBillingAmount(TimeSpan timeParked)
         {
 
-            return timeParked.TotalHours * BillingRateBoat;
+            return timeParked.TotalHours * BillingRate;
         }
     }
 }

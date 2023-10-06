@@ -32,16 +32,18 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
 
         public override double CalculateBillingAmount(TimeSpan timeParked)
         {
-            double baseAmount = base.CalculateBillingAmount(timeParked);
+            double hourlyRate = Vehicle.BillingRates["Car"];  // Default rate for cars
 
             if (FuelType.Equals("Electric", StringComparison.InvariantCultureIgnoreCase))
             {
-                double chargingAmount = timeParked.TotalHours * Vehicle.ElectricChargeRate;
-                baseAmount += chargingAmount;
+                hourlyRate += Vehicle.BillingRates["ElectricChargeRate"];
             }
 
-            return baseAmount;
+            return timeParked.TotalHours * hourlyRate;
         }
+
+
+
 
     }
 }
