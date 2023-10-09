@@ -125,6 +125,55 @@ namespace Garage_Hangar_Exercise5
             //}
             #endregion
 
+
+            #region Sampling the UI search options
+
+            // Todo: Fix Garage handler and then Implement the UI methods and search functions.
+            /*
+            // Advanced user UI search
+            Console.WriteLine("Welcome to Vehicle Search!");
+            var selectedProperties = UI.DisplaySearchMenu();
+            if (selectedProperties.Count == 0)
+            {
+                Console.WriteLine("Exiting the search.");
+                return;
+            }
+            var searchCriteria = UI.CaptureCriteria(testGaragePredator, selectedProperties);
+            */
+
+            //// Sample Dictionary for vehicle colors
+            //Dictionary<int, string> vehicleColors = new Dictionary<int, string>
+            //{
+            //    { 1, "Red" },
+            //    { 2, "Blue" },
+            //    { 3, "Green" },
+            //    { 4, "Black" }
+            //};
+
+            //// Display options to the user
+            //Console.WriteLine("\nSelect vehicle colors:");
+            //foreach (var item in vehicleColors)
+            //{
+            //    Console.WriteLine($"{item.Key}. {item.Value}");
+            //}
+
+            //// Capture user selection
+            //var selectedColors = UI.CaptureUserSelection(vehicleColors);
+
+            //// Display the selected options to the user
+            //Console.WriteLine("\nYou selected:");
+            //foreach (var color in selectedColors)
+            //{
+            //    Console.WriteLine(color);
+            //}
+
+            //// ... Add more UI interactions as needed
+
+
+            #endregion
+
+
+
             #endregion
 
             // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly
