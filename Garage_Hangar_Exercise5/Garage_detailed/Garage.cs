@@ -112,6 +112,11 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             }
         }
 
+        public IEnumerable<T> GetAllParkedVehicles()
+        {
+            return vehicles.Where(vehicle => vehicle is not null)!;
+        }
+
 
 
     }
