@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
-    public class GarageManager
+    public class Manager
     {
         private List<Garage<Vehicle>> garages = new List<Garage<Vehicle>>();
 
-        public GarageManager(int numberOfGarages, int capacityEach)
+        public Manager(int numberOfGarages, int capacityEach)
         {
             for (int i = 0; i < numberOfGarages; i++)
             {

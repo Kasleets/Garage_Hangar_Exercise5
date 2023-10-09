@@ -26,10 +26,5 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    fuelType,
                    brand) => NumberOfSeats = numberOfSeats;
 
-        public override double CalculateBillingAmount(TimeSpan timeParked)
-        {
-
-            return timeParked.TotalHours * BillingRate;
-        }
     }
 }

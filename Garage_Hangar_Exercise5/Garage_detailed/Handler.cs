@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
-    public class GarageHandler
+    public class Handler
     {
         private Garage<Vehicle> garage;
-        public GarageHandler(int capacity)
+        public Handler(int capacity)
         {
             garage = new Garage<Vehicle>(capacity);
         }

@@ -18,6 +18,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                           string fuelType,
                           string brand,
                           int strokeEngine)
+
             : base(licensePlate,
                    entryTime,
                    exitTime,

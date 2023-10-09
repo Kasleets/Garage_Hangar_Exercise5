@@ -10,8 +10,6 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 {
     public abstract class Vehicle : Interfaces.IVehicle
     {
-        // Todo: see if can use dictionary for the vehicle interface
-
         public string LicensePlate { get; set; }
         public DateTime EntryTime { get; set; }
         public DateTime? ExitTime { get; set; }
@@ -19,9 +17,17 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public double EngineVolume { get; set; }
         public string FuelType { get; set; }
         public string Brand { get; set; }
-        public static double BillingRate { get; set; } = 30; // Default rate
-        public static Dictionary<string, double> BillingRates { get; set; } = new Dictionary<string, double>();
 
+        // Dictionary to store billing rates
+        public static Dictionary<string, double> BillingRates { get; private set; } = new Dictionary<string, double>();
+
+        public static void InitializeBillingRates(Dictionary<string, double> rates)
+        {
+            BillingRates = rates ?? throw new ArgumentNullException(nameof(rates));
+        }
+
+        // HashSet to ensure unique license plates
+        private static HashSet<string> licensePlates = new HashSet<string>();
 
         protected Vehicle(string licensePlate,
                           DateTime entryTime,
@@ -31,19 +37,11 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                           string fuelType,
                           string brand)
         {
-            if (string.IsNullOrEmpty(licensePlate))
-            {
-                throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or empty.", nameof(licensePlate));
-            }
+            ValidateConstructorParameters(licensePlate, fuelType, brand);
 
-            if (string.IsNullOrEmpty(fuelType))
+            if (!licensePlates.Add(licensePlate))
             {
-                throw new ArgumentException($"'{nameof(fuelType)}' cannot be null or empty.", nameof(fuelType));
-            }
-
-            if (string.IsNullOrEmpty(brand))
-            {
-                throw new ArgumentException($"'{nameof(brand)}' cannot be null or empty.", nameof(brand));
+                throw new ArgumentException("License plate must be unique.");
             }
 
             LicensePlate = licensePlate;
@@ -61,7 +59,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             {
                 if (!ExitTime.HasValue)
                 {
-                    throw new ArgumentException($"This vehicle has not left the parking yet"); // Not yet checked out
+                    throw new ArgumentException($"This vehicle has not left the parking yet");
                 }
 
                 var timeParked = ExitTime.Value - EntryTime;
@@ -89,13 +87,29 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             return timeParked.TotalHours * rate;
         }
 
-
-
-        // Keeping the logging in the base class, since it's the same for all vehicles
+        // Logging method
         public virtual void LogBilling(TimeSpan timeParked)
         {
             var amount = CalculateBillingAmount(timeParked);
             Logger.LogAccounting($"Vehicle with license plate {LicensePlate} was billed {amount}.");
+        }
+
+        private void ValidateConstructorParameters(string licensePlate, string fuelType, string brand)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or empty.", nameof(licensePlate));
+            }
+
+            if (string.IsNullOrEmpty(fuelType))
+            {
+                throw new ArgumentException($"'{nameof(fuelType)}' cannot be null or empty.", nameof(fuelType));
+            }
+
+            if (string.IsNullOrEmpty(brand))
+            {
+                throw new ArgumentException($"'{nameof(brand)}' cannot be null or empty.", nameof(brand));
+            }
         }
 
     }

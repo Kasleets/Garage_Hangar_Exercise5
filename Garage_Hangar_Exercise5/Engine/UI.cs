@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Engine
 {
-    class Vehicle_processing
+    class UI
     {
         // Todo: Implement processing of a single vehicle with user input and logging
         /*

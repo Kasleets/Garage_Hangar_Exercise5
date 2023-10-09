@@ -28,9 +28,10 @@ namespace Garage_Hangar_Exercise5
                 IConfigurationRoot configuration = builder.Build();
 
                 // Load billing rates into the Vehicle's BillingRates dictionary
-                Vehicle.BillingRates = configuration
+                Vehicle.InitializeBillingRates(configuration
                     .GetSection("GarageSettings:BillingRates")
-                    .Get<Dictionary<string, double>>() ?? new Dictionary<string, double>();
+                    .Get<Dictionary<string, double>>() ?? new Dictionary<string, double>());
+
 
                 // Ensure the "Default" rate exists before trying to print it
                 if (Vehicle.BillingRates.ContainsKey("Default"))
@@ -45,17 +46,55 @@ namespace Garage_Hangar_Exercise5
                 // Read the garage capacity from the appsettings.json file
                 int garageCapacity = configuration.GetValue<int>("GarageSettings:Capacity");
 
+                if (garageCapacity <= 0)
+                {
+                    Console.WriteLine("Warning: Default garage capacity from configuration is invalid. Using a fallback default of 50.");
+                    garageCapacity = 50; // A safe default
+                }
+
+                Console.WriteLine($"Default garage capacity is: {garageCapacity}");
+
+                // Ask user if they want to specify a custom garage capacity
+                // Todo: Consolide custom garage capacity code into a method
+                Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                var garageChoice = Console.ReadLine()!.Trim().ToLower();
+
+                while (garageChoice != "yes" && garageChoice != "no")
+                {
+                    Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                    Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                    garageChoice = Console.ReadLine()!.Trim().ToLower();
+                }
+
+                if (garageChoice == "yes")
+                {
+                    bool validInput = false;
+                    while (!validInput)
+                    {
+                        Console.WriteLine("Enter the custom garage capacity:");
+                        if (int.TryParse(Console.ReadLine(), out int customCapacity) && customCapacity > 0)
+                        {
+                            garageCapacity = customCapacity;
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid capacity. Please enter a positive integer.");
+                        }
+                    }
+                }
+
                 // Create an instance of the garage with the capacity
                 Garage<Vehicle> garage = new Garage<Vehicle>(garageCapacity);
 
                 // Print the garage capacity
-                Console.WriteLine($"Capacity is: {garageCapacity}");
+                Console.WriteLine($"Garage initialized with capacity: {garageCapacity}");
             }
 
-            // If the configuration file is missing or corrupted, the application will continue with default values for all vehicles if users so wishes
-            #region Exception handling, keep updated.
-            catch
+            #region Exeception Handling, keep updated
+            catch (Exception ex)
             {
+                Console.WriteLine($"An error occurred: {ex.Message}");
                 Console.WriteLine("The configuration file is missing or corrupted. What would you like to do?");
                 Console.WriteLine("1. Close application");
                 Console.WriteLine("2. Use the default values for all vehicles");
@@ -63,30 +102,63 @@ namespace Garage_Hangar_Exercise5
 
                 if (choice == "1")
                 {
-                Console.WriteLine("Contact the IT-support immediately to resolve the issue.");
+                    Console.WriteLine("Contact the IT-support immediately to resolve the issue.");
                     return; // Closes the application
                 }
-                if (choice == "2") 
-                Console.WriteLine("Using default values for all vehicles, contact the IT-support immediately to secure the application. ");
 
-                // Initialize BillingRates dictionary with default values
-                Vehicle.BillingRates = new Dictionary<string, double>
+                else if (choice == "2")
+                {
+                    Console.WriteLine("Using default values for all vehicles, contact the IT-support immediately to secure the application.");
+
+                    // Initialize BillingRates dictionary with default values
+                    Vehicle.InitializeBillingRates(new Dictionary<string, double>
                     {
-                    {"Default", 69},
-                    {"ElectricChargeRate", 5 },
-                    {"Car", 50},
-                    {"Truck", 200},
-                    {"Airplane", 2000 },
-                    {"Bicycle", 3 },
-                    {"Boat", 350 },
-                    {"Bus", 120 },
-                    {"Motorcycle", 30 },
+                      {"Default", 69},
+                      {"ElectricChargeRate", 5 },
+                      {"Car", 50},
+                      {"Truck", 200},
+                      {"Airplane", 2000 },
+                      {"Bicycle", 3 },
+                      {"Boat", 350 },
+                      {"Bus", 120 },
+                      {"Motorcycle", 30 },
+                    });
 
-                    // Note: Keep this updated during revisions, and add more default values for other vehicle types here if required
-                    };
-                #endregion
+                    // Default garage capacity if not set in the corrupted/missing config
+                    int garageCapacity = 50;
+
+                    // Ask user if they want to specify a custom garage capacity
+                    Console.WriteLine($"Default Garage Capacity is: {garageCapacity}, Would you like to specify a custom garage capacity? (yes/no)");
+                    var garageChoice = Console.ReadLine()!.Trim().ToLower();
+
+                    while (garageChoice != "yes" && garageChoice != "no")
+                    {
+                        Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                        Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                        garageChoice = Console.ReadLine()!.Trim().ToLower();
+                    }
+
+                    if (garageChoice == "yes")
+                    {
+                        bool validInput = false;
+                        while (!validInput)
+                        {
+                            Console.WriteLine("Enter the custom garage capacity:");
+                            if (int.TryParse(Console.ReadLine(), out int customCapacity) && customCapacity > 0)
+                            {
+                                garageCapacity = customCapacity;
+                                validInput = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid capacity. Please enter a positive integer.");
+                            }
+                        }
+                    }
+                    // If the user enters "no", it simply proceeds with the default value set earlier.
+                    #endregion
+                }
             }
-
         }
     }
 }
