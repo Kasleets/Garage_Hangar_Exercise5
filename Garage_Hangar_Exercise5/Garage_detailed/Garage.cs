@@ -96,13 +96,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             foreach (var vehicle in this)
             {
                 count++;
-                Console.WriteLine($"Vehicle {count}:");
-                Console.WriteLine($"License Plate: {vehicle.LicensePlate}");
-                Console.WriteLine($"Entry Time: {vehicle.EntryTime}");
-                Console.WriteLine($"Number of Engines: {vehicle.NumberOfEngines}");
-                Console.WriteLine($"Engine Volume: {vehicle.EngineVolume}");
-                Console.WriteLine($"Fuel Type: {vehicle.FuelType}");
-                Console.WriteLine($"Brand: {vehicle.Brand}");
+                Console.WriteLine($"Vehicle {count}: {vehicle}");  // Using the overridden ToString method of the Vehicle class
                 Console.WriteLine("----------------------------------");
             }
 
@@ -111,6 +105,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 Console.WriteLine("The garage is currently empty.");
             }
         }
+
+
 
         public IEnumerable<T> GetAllParkedVehicles()
         {

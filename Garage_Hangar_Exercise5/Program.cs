@@ -5,6 +5,7 @@ using Garage_Hangar_Exercise5.Garage_detailed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
@@ -19,57 +20,112 @@ namespace Garage_Hangar_Exercise5
         static void Main(string[] args)
         {
             #region Short testing minimal setup, not main application
-            
+
             // Initialize a Garage instance for testing
-            Garage<Vehicle> garage = new Garage<Vehicle>(10);
+            Garage<Vehicle> testGaragePredator = new Garage<Vehicle>(10);
 
             // 1. Setup: Create a few sample vehicles
             Car car1 = new Car("ABC123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "Red");
             Bicycle bike1 = new Bicycle("BIK001", DateTime.Now, null, 0, 0, "Manpower", "Raleigh", "Blueoni","Pink");
             
             // Park these vehicles in the garage
-            garage.ParkVehicle(car1);
-            garage.ParkVehicle(bike1);
-            garage.ParkVehicle(new Car("KOI123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "Black"));
-            garage.ParkVehicle(new Car("PLU123", DateTime.Now, null, 1, 6200, "Petrol", "Toyota", "Pink"));
-            garage.ParkVehicle(new Car("UTI123", DateTime.Now, null, 1, 2900, "Petrol", "Toyota", "Black"));
-            garage.ParkVehicle(new Car("XYZ456", DateTime.Now, null, 1, 2500, "Petrol", "Ford", "Blue"));
-            garage.ParkVehicle(new Truck("LMN789", DateTime.Now, null, 2, 5000, "Diesel", "Volvo", 14000, "Red"));
+            testGaragePredator.ParkVehicle(car1);
+            testGaragePredator.ParkVehicle(bike1);
+            testGaragePredator.ParkVehicle(new Car("KOI123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "BluE"));
+            testGaragePredator.ParkVehicle(new Car("PLU123", DateTime.Now, null, 1, 6200, "Petrol", "ToyOTa", "ReD"));
+            testGaragePredator.ParkVehicle(new Car("UTI123", DateTime.Now, null, 1, 3900, "Petrol", "Mazda", "Black"));
+            testGaragePredator.ParkVehicle(new Car("XYZ456", DateTime.Now, null, 1, 2500, "Petrol", "Ford", "Blue"));
+            testGaragePredator.ParkVehicle(new Truck("LMN789", DateTime.Now, null, 2, 5000, "Diesel", "Volvo", 14000, "Red"));
 
-            // 2. Execution: List all parked vehicles
-            garage.ListAllParkedVehicles();
+            //// 2. Execution: List all parked vehicles
+            //Console.WriteLine("Another new implementation \nMethod for GetAllParkedVehicles()\n");
+            //testGaragePredator.ListAllParkedVehicles();
 
-            var parkedVehicles = garage.GetAllParkedVehicles();
-            Console.WriteLine("Parked Vehicles:");
-            foreach (var vehicle in parkedVehicles)
-            {
-                Console.WriteLine($"- {vehicle.Brand}, License Plate: {vehicle.LicensePlate}");
-            }
+            //var parkedVehicles = testGaragePredator.GetAllParkedVehicles();
+            //Console.WriteLine("\nAnother new implementation \nParked Vehicles:");
+            //foreach (var vehicle in parkedVehicles)
+            //{
+            //    Console.WriteLine($"- {vehicle.Brand}, License Plate: {vehicle.LicensePlate}");
+            //}
 
-            Console.WriteLine("\nTrying out GetVehicle method");
-            Console.WriteLine(garage.GetVehicle("ABC123"));
+            //Console.WriteLine("\nAnother new implementation \nTrying out GetVehicle method, a vehicle with ABC123 license plate");
+            //Console.WriteLine(testGaragePredator.GetVehicle("ABC123"));
 
-            Console.WriteLine($"\nGarage Capacity: {garage.Capacity}");
-            Console.WriteLine($"Available Slots in Garage: {garage.AvailableSlots}");
-            Console.WriteLine($"Is Garage Full: {garage.IsFull}");
+            //Console.WriteLine("\nAnother new implementation \nDisplaying the capacity method/properties");
 
-            // Trying out the search functions
-            Console.WriteLine("\nTrying out searching by type function");
-            var blackCars = garage.FindVehicles(v => v.Color == "Black" && v is Car);
-            Console.WriteLine("Black Cars:");
-            foreach (var car in blackCars)
-            {
-                Console.WriteLine(car);
-            }
+            //Console.WriteLine($"\nGarage Capacity: {testGaragePredator.Capacity}");
+            //Console.WriteLine($"Available Slots in Garage: {testGaragePredator.AvailableSlots}");
+            //Console.WriteLine($"Is Garage Full: {testGaragePredator.IsFull}");
 
-            var toyotaVehicles = garage.FindVehicles(v => v.Brand == "Toyota");
-            Console.WriteLine("\nToyota Vehicles:");
-            foreach (var vehicle in toyotaVehicles)
+            //// Trying out the search functions
+            //Console.WriteLine("\nAnother new implementation \nTrying out searching by type function");
+            //var blackCars = testGaragePredator.FindVehicles(v => v.Color == "Black" && v is Car);
+            //Console.WriteLine("Black Cars:");
+            //foreach (var car in blackCars)
+            //{
+            //    Console.WriteLine(car);
+            //}
+
+            //Console.WriteLine("\nAnother new implementation \nTrying out searching by brand Toyota");
+            //var toyotaVehicles = testGaragePredator.FindVehicles(v => v.Brand == "Toyota");
+            //Console.WriteLine("\nToyota Vehicles:");
+            //foreach (var vehicle in toyotaVehicles)
+            //{
+            //    Console.WriteLine(vehicle);
+            //}
+
+         #region Search Logic Testing
+
+            // Use the SearchSpecificationBuilder to construct the predicate
+            var builder = new SearchSpecificationBuilder<Vehicle>();
+            builder.AddCriteria(v => v.Brand.Equals("Toyota", StringComparison.OrdinalIgnoreCase));
+            builder.AddCriteria(v => v.Color.Equals("Red", StringComparison.OrdinalIgnoreCase));
+            var predicate = builder.Build(); 
+
+            // New Search logic, more advanced
+            // Find vehicles and print results
+            Console.WriteLine("\nSearching for all Toyotas that are Red (case-insensitive):");
+            var matchedVehicles = testGaragePredator.FindVehicles(predicate); // Don't forget to compile the predicate
+            foreach (var vehicle in matchedVehicles)
             {
                 Console.WriteLine(vehicle);
             }
 
+            #region bloated, old legacy search logic, missing a part, redundant.
+            //// Simple Search
+            //Console.WriteLine("Simple Search: All Toyotas");
+            //var toyotaVehicles = testGaragePredator.FindVehicles(v => v.Brand == "Toyota");
+            //foreach (var vehicle in toyotaVehicles)
+            //{
+            //    Console.WriteLine(vehicle);
+            //}
 
+            //// Compound Search
+            //Console.WriteLine("\nCompound Search: All Red Toyotas");
+            //var redToyotas = testGaragePredator.FindVehicles(v => v.Brand == "Toyota" && v.Color == "Red");
+            //foreach (var vehicle in redToyotas)
+            //{
+            //    Console.WriteLine(vehicle);
+            //}
+
+            //// No Matches
+            //Console.WriteLine("\nNo Matches: All Blue Ferraris");
+            //var blueFerraris = testGaragePredator.FindVehicles(v => v.Brand == "Ferrari" && v.Color == "Blue");
+            //foreach (var vehicle in blueFerraris)
+            //{
+            //    Console.WriteLine(vehicle);
+            //}
+
+            //// Complex Search
+            //Console.WriteLine("\nComplex Search: All cars with engine volume more than 3000 and are of Petrol fuel type");
+            //var complexSearch = testGaragePredator.FindVehicles(v => v is Car && v.EngineVolume > 3000 && v.FuelType == "Petrol");
+            //foreach (var vehicle in complexSearch)
+            //{
+            //    Console.WriteLine(vehicle);
+            //}
+            #endregion
+
+            #endregion
 
             // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly
 
