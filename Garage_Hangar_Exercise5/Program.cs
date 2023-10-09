@@ -41,6 +41,8 @@ namespace Garage_Hangar_Exercise5
                 Console.WriteLine($"- {vehicle.Brand}, License Plate: {vehicle.LicensePlate}");
             }
 
+            Console.WriteLine("\nTrying out GetVehicle method");
+            Console.WriteLine(garage.GetVehicle("ABC123"));
 
 
             // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly

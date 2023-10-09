@@ -117,6 +117,12 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             return vehicles.Where(vehicle => vehicle is not null)!;
         }
 
+        public T? GetVehicle(string licensePlate)
+        {
+            // Using LINQ to find the vehicle by its license plate
+            return vehicles.FirstOrDefault(v => v?.LicensePlate.Equals(licensePlate, StringComparison.OrdinalIgnoreCase) == true);
+        }
+
 
 
     }

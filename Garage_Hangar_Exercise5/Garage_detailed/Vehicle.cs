@@ -112,5 +112,28 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             }
         }
 
+        // Less memory efficient, but more future-proof that will display all of the unique properties of the derived classes
+        // Shouldn't be overall a problem in this Parking Lot application.
+        public override string ToString()
+        {
+            var properties = this.GetType().GetProperties()
+                            .Where(p => p.Name != "Cost");  // Exclude the Cost property, to avoid system stack overflow when calling ToString() on the derived classes 
+
+            var propertyValues = properties.Select(p =>
+            {
+                var value = p.GetValue(this);
+                // Check for ExitTime and adjust the value if it's null
+                if (p.Name == "ExitTime" && value == null)
+                {
+                    value = "Still Parked";
+                }
+                return $"\n{p.Name}: {value}";
+            });
+
+            return string.Join(" ", propertyValues);
+        }
+
+
+
     }
 }
