@@ -18,6 +18,26 @@ namespace Garage_Hangar_Exercise5
     {
         static void Main(string[] args)
         {
+            #region Short testing minimal setup, not main application
+            /*
+            // Initialize a Garage instance for testing
+            Garage<Vehicle> garage = new Garage<Vehicle>(10);
+
+            // 1. Setup: Create a few sample vehicles
+            Car car1 = new Car("ABC123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota");
+            Bicycle bike1 = new Bicycle("BIK001", DateTime.Now, null, 0, 0, "Manpower", "Raleigh", "Blue");
+            
+            // Park these vehicles in the garage
+            garage.ParkVehicle(car1);
+            garage.ParkVehicle(bike1);
+            
+            // 2. Execution: List all parked vehicles
+            garage.ListAllParkedVehicles();
+
+            // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly
+            */
+            #endregion
+             // Boundry to comment out for testing purposes
             try
             {
                 // Create a configuration builder
@@ -158,7 +178,7 @@ namespace Garage_Hangar_Exercise5
                     // If the user enters "no", it simply proceeds with the default value set earlier.
                     #endregion
                 }
-            }
+            }  // Boundry to comment out for testing purposes
         }
     }
 }
