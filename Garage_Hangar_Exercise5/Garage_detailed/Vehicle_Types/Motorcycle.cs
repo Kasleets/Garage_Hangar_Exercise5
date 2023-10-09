@@ -17,7 +17,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                           double engineVolume,
                           string fuelType,
                           string brand,
-                          int strokeEngine)
+                          int strokeEngine,
+                          string color)
 
             : base(licensePlate,
                    entryTime,
@@ -25,7 +26,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    numberOfEngines,
                    engineVolume,
                    fuelType,
-                   brand) => StrokeEngine = strokeEngine;
+                   brand,
+                   color) => StrokeEngine = strokeEngine;
 
     }
 }

@@ -123,6 +123,37 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             return vehicles.FirstOrDefault(v => v?.LicensePlate.Equals(licensePlate, StringComparison.OrdinalIgnoreCase) == true);
         }
 
+        public bool IsFull
+        {
+            get
+            {
+                return occupiedSlots.Count == vehicles.Length;
+            }
+        }
+
+        public int Capacity
+        {
+            get
+            {
+                return vehicles.Length;
+            }
+        }
+
+        public int AvailableSlots
+        {
+            get
+            {
+                return vehicles.Length - occupiedSlots.Count;
+            }
+        }
+
+        // Search functionality for the garage by type
+        public IEnumerable<T> FindVehicles(Func<T, bool> predicate)
+        {
+            return vehicles.OfType<T>().Where(predicate).ToList();
+        }
+
+
 
 
     }

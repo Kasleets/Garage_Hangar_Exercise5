@@ -24,13 +24,18 @@ namespace Garage_Hangar_Exercise5
             Garage<Vehicle> garage = new Garage<Vehicle>(10);
 
             // 1. Setup: Create a few sample vehicles
-            Car car1 = new Car("ABC123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota");
-            Bicycle bike1 = new Bicycle("BIK001", DateTime.Now, null, 0, 0, "Manpower", "Raleigh", "Blue");
+            Car car1 = new Car("ABC123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "Red");
+            Bicycle bike1 = new Bicycle("BIK001", DateTime.Now, null, 0, 0, "Manpower", "Raleigh", "Blueoni","Pink");
             
             // Park these vehicles in the garage
             garage.ParkVehicle(car1);
             garage.ParkVehicle(bike1);
-            
+            garage.ParkVehicle(new Car("KOI123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "Black"));
+            garage.ParkVehicle(new Car("PLU123", DateTime.Now, null, 1, 6200, "Petrol", "Toyota", "Pink"));
+            garage.ParkVehicle(new Car("UTI123", DateTime.Now, null, 1, 2900, "Petrol", "Toyota", "Black"));
+            garage.ParkVehicle(new Car("XYZ456", DateTime.Now, null, 1, 2500, "Petrol", "Ford", "Blue"));
+            garage.ParkVehicle(new Truck("LMN789", DateTime.Now, null, 2, 5000, "Diesel", "Volvo", 14000, "Red"));
+
             // 2. Execution: List all parked vehicles
             garage.ListAllParkedVehicles();
 
@@ -43,6 +48,27 @@ namespace Garage_Hangar_Exercise5
 
             Console.WriteLine("\nTrying out GetVehicle method");
             Console.WriteLine(garage.GetVehicle("ABC123"));
+
+            Console.WriteLine($"\nGarage Capacity: {garage.Capacity}");
+            Console.WriteLine($"Available Slots in Garage: {garage.AvailableSlots}");
+            Console.WriteLine($"Is Garage Full: {garage.IsFull}");
+
+            // Trying out the search functions
+            Console.WriteLine("\nTrying out searching by type function");
+            var blackCars = garage.FindVehicles(v => v.Color == "Black" && v is Car);
+            Console.WriteLine("Black Cars:");
+            foreach (var car in blackCars)
+            {
+                Console.WriteLine(car);
+            }
+
+            var toyotaVehicles = garage.FindVehicles(v => v.Brand == "Toyota");
+            Console.WriteLine("\nToyota Vehicles:");
+            foreach (var vehicle in toyotaVehicles)
+            {
+                Console.WriteLine(vehicle);
+            }
+
 
 
             // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly

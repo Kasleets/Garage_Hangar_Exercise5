@@ -17,7 +17,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                         double engineVolume,
                         string fuelType,
                         string brand,
-                        int wingSpan)
+                        int wingSpan,
+                        string color)
 
                : base(licensePlate,
                       entryTime,
@@ -25,6 +26,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                       numberOfEngines,
                       engineVolume,
                       fuelType,
-                      brand) => WingSpan = wingSpan;
+                      brand,
+                      color) => WingSpan = wingSpan;
     }
 }

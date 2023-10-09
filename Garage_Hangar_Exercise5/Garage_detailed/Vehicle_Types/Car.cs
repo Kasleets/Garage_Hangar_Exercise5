@@ -17,7 +17,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    int numberOfEngines,
                    double engineVolume,
                    string fuelType,
-                   string brand)
+                   string brand,
+                   string color)
 
             : base(licensePlate,
                    entryTime,
@@ -25,7 +26,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    numberOfEngines,
                    engineVolume,
                    fuelType,
-                   brand)
+                   brand,
+                   color)
 
         {
         }

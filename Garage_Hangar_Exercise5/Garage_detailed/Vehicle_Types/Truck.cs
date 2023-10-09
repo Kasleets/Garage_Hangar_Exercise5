@@ -17,7 +17,8 @@ public class Truck : Vehicle
                   double engineVolume,
                   string fuelType,
                   string brand,
-                  double length)
+                  double length,
+                  string color)
 
       : base(licensePlate,
              entryTime,
@@ -25,7 +26,8 @@ public class Truck : Vehicle
              numberOfEngines,
              engineVolume,
              fuelType,
-             brand) => Length = length;
+             brand,
+             color) => Length = length;
 
 
     }

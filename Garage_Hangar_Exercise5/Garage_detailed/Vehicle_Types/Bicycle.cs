@@ -16,14 +16,16 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                        double engineVolume,
                        string fuelType,
                        string brand,
-                       string type)
+                       string type,
+                       string color)
             : base(licensePlate,
                    entryTime,
                    exitTime,
                    numberOfEngines,
                    engineVolume,
                    fuelType,
-                   brand) => Type = type;
+                   brand,
+                   color) => Type = type;
         
           
     public override double CalculateBillingAmount(TimeSpan timeParked)

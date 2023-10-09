@@ -17,6 +17,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public double EngineVolume { get; set; }
         public string FuelType { get; set; }
         public string Brand { get; set; }
+        public string Color { get; set; }
 
         // Dictionary to store billing rates
         public static Dictionary<string, double> BillingRates { get; private set; } = new Dictionary<string, double>();
@@ -35,7 +36,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                           int numberOfEngines,
                           double engineVolume,
                           string fuelType,
-                          string brand)
+                          string brand,
+                          string color)
         {
             ValidateConstructorParameters(licensePlate, fuelType, brand);
 
@@ -51,6 +53,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             EngineVolume = engineVolume;
             FuelType = fuelType;
             Brand = brand;
+            Color = color;
         }
 
         public double Cost
@@ -114,6 +117,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         // Less memory efficient, but more future-proof that will display all of the unique properties of the derived classes
         // Shouldn't be overall a problem in this Parking Lot application.
+        // Takes in consideration the String interpolation
         public override string ToString()
         {
             var properties = this.GetType().GetProperties()

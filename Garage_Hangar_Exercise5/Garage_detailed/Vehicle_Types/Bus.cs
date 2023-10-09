@@ -16,7 +16,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    double engineVolume,
                    string fuelType,
                    string brand,
-                   int numberOfSeats)
+                   int numberOfSeats,
+                   string color)
 
             : base(licensePlate,
                    entryTime,
@@ -24,7 +25,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    numberOfEngines,
                    engineVolume,
                    fuelType,
-                   brand) => NumberOfSeats = numberOfSeats;
+                   brand,
+                   color) => NumberOfSeats = numberOfSeats;
 
     }
 }
