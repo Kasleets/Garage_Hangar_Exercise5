@@ -53,6 +53,7 @@ namespace Garage_Hangar_Exercise5
             }
 
             // If the configuration file is missing or corrupted, the application will continue with default values for all vehicles if users so wishes
+            #region Exception handling, keep updated.
             catch
             {
                 Console.WriteLine("The configuration file is missing or corrupted. What would you like to do?");
@@ -83,6 +84,7 @@ namespace Garage_Hangar_Exercise5
 
                     // Note: Keep this updated during revisions, and add more default values for other vehicle types here if required
                     };
+                #endregion
             }
 
         }

@@ -8,13 +8,15 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
 {
     public class Bus : Vehicle
     {
+        public int NumberOfSeats { get; set; }
         public Bus(string licensePlate,
                    DateTime entryTime,
                    DateTime? exitTime,
                    int numberOfEngines,
                    double engineVolume,
                    string fuelType,
-                   string brand)
+                   string brand,
+                   int numberOfSeats)
 
             : base(licensePlate,
                    entryTime,
@@ -22,10 +24,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
                    numberOfEngines,
                    engineVolume,
                    fuelType,
-                   brand)
-
-        {
-        }
+                   brand) => NumberOfSeats = numberOfSeats;
 
         public override double CalculateBillingAmount(TimeSpan timeParked)
         {

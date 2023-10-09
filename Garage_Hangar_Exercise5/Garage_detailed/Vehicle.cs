@@ -10,6 +10,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 {
     public abstract class Vehicle : Interfaces.IVehicle
     {
+        // Todo: see if can use dictionary for the vehicle interface
+
         public string LicensePlate { get; set; }
         public DateTime EntryTime { get; set; }
         public DateTime? ExitTime { get; set; }

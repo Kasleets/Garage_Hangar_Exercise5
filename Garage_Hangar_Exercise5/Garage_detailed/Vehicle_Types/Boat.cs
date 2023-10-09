@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types
 {
-    internal class Boat
+    public class Boat : Vehicle
     {
+        public int NumberOfFloors { get; set; }
+
+        public Boat(string licensePlate,
+                    DateTime entryTime,
+                    DateTime? exitTime,
+                    int numberOfEngines,
+                    double engineVolume,
+                    string fuelType,
+                    string brand,
+                    int numberOfFloors)
+
+            : base(licensePlate,
+                   entryTime,
+                   exitTime,
+                   numberOfEngines,
+                   engineVolume,
+                   fuelType,
+                   brand) => NumberOfFloors = numberOfFloors;
     }
 }
