@@ -9,13 +9,65 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 {
     class Garage<T> : IEnumerable<T> where T : Vehicle
     {
+        private T?[] vehicles; // Note: We're allowing nullable values here.
 
-        private T[] vehicles;
+        // This HashSet will keep track of occupied slots
+        private HashSet<int> occupiedSlots = new HashSet<int>();
 
         public Garage(int capacity)
         {
+            vehicles = new T?[capacity];
+        }
 
-            vehicles = new T[capacity];
+        public bool ParkVehicle(T vehicle)
+        {
+            // Find first available slot
+            int? availableSlot = FindAvailableSlot();
+
+            if (availableSlot.HasValue)
+            {
+                vehicles[availableSlot.Value] = vehicle;
+                occupiedSlots.Add(availableSlot.Value);
+                return true;
+            }
+            else
+            {
+                return false; // Garage is full
+            }
+        }
+
+        public bool RemoveVehicle(string licensePlate)
+        {
+            int? vehicleIndex = FindVehicleIndex(licensePlate);
+
+            if (vehicleIndex.HasValue)
+            {
+                vehicles[vehicleIndex.Value] = null;
+                occupiedSlots.Remove(vehicleIndex.Value);
+                return true;
+            }
+            else
+            {
+                return false; // Vehicle not found
+            }
+        }
+
+        private int? FindAvailableSlot()
+        {
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                if (!occupiedSlots.Contains(i))
+                {
+                    return i;
+                }
+            }
+
+            return null; // No available slots
+        }
+
+        private int? FindVehicleIndex(string licensePlate)
+        {
+            return vehicles.ToList().FindIndex(v => v?.LicensePlate == licensePlate);
         }
 
         // Implementation for the non-generic IEnumerable
@@ -31,54 +83,36 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             for (int i = 0; i < vehicles.Length; i++)
             {
                 if (vehicles[i] != null)
-                    yield return vehicles[i];
+                    yield return vehicles[i]!;
             }
         }
 
-        public bool ParkVehicle(T vehicle)
+        public void ListAllParkedVehicles()
         {
-            // Check if the vehicle's license plate already exists in the garage
-            if (vehicles.Any(v => v?.LicensePlate == vehicle.LicensePlate))
+            Console.WriteLine("List of All Parked Vehicles:");
+            Console.WriteLine("----------------------------------");
+
+            int count = 0;
+            foreach (var vehicle in this)
             {
-                Console.WriteLine($"The vehicle with license plate {vehicle.LicensePlate} is already parked in the garage.");
-                return false; // Indicate the vehicle wasn't parked
+                count++;
+                Console.WriteLine($"Vehicle {count}:");
+                Console.WriteLine($"License Plate: {vehicle.LicensePlate}");
+                Console.WriteLine($"Entry Time: {vehicle.EntryTime}");
+                Console.WriteLine($"Number of Engines: {vehicle.NumberOfEngines}");
+                Console.WriteLine($"Engine Volume: {vehicle.EngineVolume}");
+                Console.WriteLine($"Fuel Type: {vehicle.FuelType}");
+                Console.WriteLine($"Brand: {vehicle.Brand}");
+                Console.WriteLine("----------------------------------");
             }
 
-            // 1. Check if the garage is full
-            if (vehicles.All(v => v != null))
+            if (count == 0)
             {
-                Console.WriteLine("The garage is full. Cannot park the vehicle.");
-                return false; // Indicate the vehicle wasn't parked
+                Console.WriteLine("The garage is currently empty.");
             }
-
-            // 2. Find the first empty spot and park the vehicle
-            int emptySpotIndex = Array.IndexOf(vehicles, null);
-            vehicles[emptySpotIndex] = vehicle;
-            Console.WriteLine($"Vehicle with license plate {vehicle.LicensePlate} has been parked at spot {emptySpotIndex + 1}.");
-            return true; // Indicate the vehicle was parked successfully
         }
 
 
-        public bool RemoveVehicle(string licensePlate)
-        {
-            // 1. Find the vehicle by its license plate
-            var vehicleToRemove = vehicles.FirstOrDefault(v => v?.LicensePlate == licensePlate);
-
-            // Check if the vehicle was found
-            if (vehicleToRemove == null)
-            {
-                Console.WriteLine($"No vehicle with license plate {licensePlate} was found in the garage.");
-                return false; // Indicate the vehicle wasn't found
-            }
-
-            // 2. Remove the vehicle from the garage
-            int vehicleIndex = Array.IndexOf(vehicles, vehicleToRemove);
-            vehicles[vehicleIndex] = null;
-            Console.WriteLine($"Vehicle with license plate {licensePlate} has been removed from the garage.");
-
-            return true; // Indicate the vehicle was removed successfully
-        }
 
     }
-
 }
