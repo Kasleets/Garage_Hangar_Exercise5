@@ -65,9 +65,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             return null; // No available slots
         }
 
-        private int? FindVehicleIndex(string licensePlate)
+        internal int? FindVehicleIndex(string licensePlate)
         {
-            return vehicles.ToList().FindIndex(v => v?.LicensePlate == licensePlate);
+            return vehicles.ToList().FindIndex(v => v?.LicensePlate?.Equals(licensePlate, StringComparison.OrdinalIgnoreCase) == true);
         }
 
         // Implementation for the non-generic IEnumerable

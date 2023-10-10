@@ -106,10 +106,12 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             //    //Add Unique property for Bus
             //    else if (Vehicle_Types == typeof(Truck))
             //    //Add Unique property for Truck
-            
+
             #endregion
 
-
+            // Creating a list of data to pick from, to constrict the randomness of the data
+            var brands = new List<string> { "Toyota", "Mazda", "Volkswagen", "BMW", "Mercedes", "Audi" };
+            var colors = new List<string> {"Red", "Blue", "Pink", "Green", "White", "Black" };
             for (int i = 0; i < numberOfVehicles; i++)
             {
                 var bogusCar = new Faker<Car>()
@@ -118,10 +120,10 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                         f.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now),  // EntryTime
                         null,                                                      // ExitTime
                         f.Random.Int(1, 4),                                        // NumberOfEngines
-                        f.Random.Int(1000, 5000),                                  // EngineVolume
+                        f.Random.Int(10, 50) * 100,                                // EngineVolume
                         f.Vehicle.Fuel(),                                          // FuelType
-                        f.Vehicle.Manufacturer(),                                  // Brand
-                        f.Commerce.Color()                                         // Color
+                        f.PickRandom(brands),                                      // Brand
+                        f.PickRandom(colors)                                       // Color
                         ))
                         .FinishWith((f, v) =>
                         {
@@ -161,7 +163,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             });
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Found {vehicles.Count()} vehicles based on the given criteria.");
+            Console.WriteLine($"Found {vehicles.Count()} vehicles based on the given criteria: {criteria}");
             Console.ResetColor();
             Console.WriteLine("----------------------------------");
 
@@ -170,6 +172,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 Console.WriteLine(vehicle);
                 Console.WriteLine("----------------------------------");
             }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Found {vehicles.Count()} vehicles based on the given criteria: {criteria}");
+            Console.ResetColor();
         }
 
         private void DisplayNumberOfParkedVehicles()
@@ -217,11 +222,23 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             try
             {
                 var licensePlate = Console.ReadLine();
-                if (_garage.RemoveVehicle(licensePlate!))
+                int? vehicleIndex = _garage.FindVehicleIndex(licensePlate!);
+
+                if (vehicleIndex.HasValue && vehicleIndex != -1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Vehicle removed successfully!");
-                    Console.ResetColor();
+                    if (_garage.RemoveVehicle(licensePlate!))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Vehicle removed successfully!");
+                        Console.ResetColor();
+                    }
+                    else
+
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Error occurred while trying to remove the vehicle.");
+                        Console.ResetColor();
+                    }
                 }
                 else
                 {
@@ -230,13 +247,15 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     Console.ResetColor();
                 }
             }
-            catch (ArgumentException ex)
+            catch (InvalidOperationException ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
                 Console.ResetColor();
                 return;
             }
+            
+
         }
 
         private void ParkVehicle()
