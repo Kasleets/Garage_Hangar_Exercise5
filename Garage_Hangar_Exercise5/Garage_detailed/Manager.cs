@@ -16,42 +16,42 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
 
 
-       
+
 
         internal void Run()
         {
-           // InitGarage();
+            // InitGarage();
             ShowMainMeny();
 
             //Get input from user
             string input = Console.ReadLine();
             switch (input)
             {
-                    case "1":
+                case "1":
                     ParkVehicle();
                     break;
 
-                    case "2":
+                case "2":
                     RemoveVehicle();
                     break;
 
-                    case "3":
+                case "3":
                     SearchAllVehiclesByLicensePlate();
                     break;
 
-                    case "4":
+                case "4":
                     SearchSpecificVehicleByLicensePlate();
                     break;
 
-                    case "5":
+                case "5":
                     DisplayNumberOfParkedVehicles();
                     break;
 
-                    case "6":
+                case "6":
                     SearchVehiclesByProperties();
                     break;
 
-                    case "0":
+                case "0":
                     Environment.Exit(0);
                     break;
 
@@ -130,25 +130,54 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             ShowParkVehicleMeny();
             var choice = Console.ReadLine();
 
+            var properties = this.GetType().GetProperties()
+                            .Where(p => p.Name != "Cost");  // Exclude the Cost property, to avoid system stack overflow when calling ToString() on the derived classes 
 
-            Console.WriteLine("Enter license plate:");
-            string licensePlate = Console.ReadLine();
+            // Assuming there is a collection called "myCollection" and we want to filter it based on a property called "someProperty" equal to a specific value "someValue"
 
-            Console.WriteLine("Enter brand:");
-            string brand = Console.ReadLine();
+           // var filteredCollection = myCollection.Where(item => item.someProperty == someValue);
+            var propertyValues = properties.Select(p =>
+           { 
+               {
 
-            Console.WriteLine("Enter color:");
-            string color = Console.ReadLine();
+                   var value = p.GetValue(this);
+                   // Check for ExitTime and adjust the value if it's null
+                   if (p.Name == "ExitTime" && value == null)
+                   {
+                       value = "Still Parked";
+                   }
+                   return $"\n{p.Name}: {value}";
+               }
 
+           });
 
 
             // ... Capture other properties as needed
 
+            // Use LINQ to capture user input for each property
+            var userInput = propertyValues.ToDictionary( 
+                propName => propName,
+                propName =>
+                {
+                    Console.WriteLine($"Enter {propName}:");
+                    return Console.ReadLine();
+                });
+
             Vehicle vehicleToPark = choice switch
             {
-                "1" => new Car(licensePlate, DateTime.Now, null, brand, color),
-                //"1" => new Car(licensePlate, DateTime.Now, null, /* other properties */),
-                //"2" => new Bus(licensePlate, DateTime.Now, null, /* other properties */),
+                "1" => new Car(
+                            userInput["LicensePlate"],
+                            DateTime.Now,
+                            null,
+                            int.Parse(userInput["NumberOfEngines"]),
+                            double.Parse(userInput["EngineVolume"]),
+                            userInput["FuelType"],
+                            userInput["Brand"],
+                            userInput["Color"]
+                        ),
+
+                // ... handle other vehicle types similarly
+
                 _ => null
             } ;
 
