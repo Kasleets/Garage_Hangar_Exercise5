@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types;
+using Bogus.DataSets;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
@@ -112,15 +113,53 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void RemoveVehicle()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Enter the license plate of the vehicle to remove:");
+            var licensePlate = Console.ReadLine();
+            if (garage.RemoveVehicle(licensePlate!))
+            {
+                Console.WriteLine("Vehicle removed successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Vehicle with the given license plate not found.");
+            }
         }
 
         private void ParkVehicle()
         {
             ShowParkVehicleMeny();
+            var choice = Console.ReadLine();
 
-            //Get input from user
-            //Switch
+
+            Console.WriteLine("Enter license plate:");
+            string licensePlate = Console.ReadLine();
+
+            Console.WriteLine("Enter brand:");
+            string brand = Console.ReadLine();
+
+            Console.WriteLine("Enter color:");
+            string color = Console.ReadLine();
+
+
+
+            // ... Capture other properties as needed
+
+            Vehicle vehicleToPark = choice switch
+            {
+                "1" => new Car(licensePlate, DateTime.Now, null, brand, color),
+                //"1" => new Car(licensePlate, DateTime.Now, null, /* other properties */),
+                //"2" => new Bus(licensePlate, DateTime.Now, null, /* other properties */),
+                _ => null
+            } ;
+
+            if (vehicleToPark != null && garage.ParkVehicle(vehicleToPark))
+            {
+                Console.WriteLine("Vehicle parked successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Failed to park the vehicle. Garage might be full.");
+            }
         }
 
         private void ShowParkVehicleMeny()
