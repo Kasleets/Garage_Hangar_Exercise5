@@ -34,6 +34,9 @@ namespace Garage_Hangar_Exercise5
 
                IConfigurationRoot configuration = builder.Build();
                 #endregion
+
+
+
                 #region Creation of BillingRates Dictionary and reading from appsettings.json file the configuration.
                 // Load billing rates into the Vehicle's BillingRates dictionary
                 Vehicle.InitializeBillingRates(configuration
@@ -51,6 +54,9 @@ namespace Garage_Hangar_Exercise5
                    Console.WriteLine("Error: Default billing rate is not specified in the configuration.");
                }
                 #endregion
+
+
+
 
                 #region Creation of Garage Capacity and reading from appsettings.json file.
                 // Read the garage capacity from the appsettings.json file
@@ -95,6 +101,9 @@ namespace Garage_Hangar_Exercise5
                }
                 #endregion
 
+
+
+
                 #region Creation of garage instance and printing the garage capacity.
 
                 // Create an instance of the garage with the specified capacity by the user or appsettings.json
@@ -103,9 +112,24 @@ namespace Garage_Hangar_Exercise5
                 // Print the garage capacity
                 Console.WriteLine($"Garage initialized with capacity: {garageCapacity}");
                 #endregion
+
+
+
+
+                #region Development of proper program UI and menu.
+
+                var manager = new Manager();
+                manager.Run();
+
+
+
+                #endregion
+
+
+
             }
 
-           catch (Exception ex)
+            catch (Exception ex)
            #region Exeception Handling, in case of missing or corrupted Appsettings.json file, keep updated.
            {
                Console.WriteLine($"An error occurred: {ex.Message}");
