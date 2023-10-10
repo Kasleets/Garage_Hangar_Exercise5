@@ -19,179 +19,24 @@ namespace Garage_Hangar_Exercise5
     {
         static void Main(string[] args)
         {
-            #region Short testing minimal setup, not main application
 
-            // Initialize a Garage instance for testing
-            Garage<Vehicle> testGaragePredator = new Garage<Vehicle>(10);
-
-            // 1. Setup: Create a few sample vehicles
-            Car car1 = new Car("ABC123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "Red");
-            Bicycle bike1 = new Bicycle("BIK001", DateTime.Now, null, 0, 0, "Manpower", "Raleigh", "Blueoni","Pink");
-            
-            // Park these vehicles in the garage
-            testGaragePredator.ParkVehicle(car1);
-            testGaragePredator.ParkVehicle(bike1);
-            testGaragePredator.ParkVehicle(new Car("KOI123", DateTime.Now, null, 1, 2000, "Petrol", "Toyota", "BluE"));
-            testGaragePredator.ParkVehicle(new Car("PLU123", DateTime.Now, null, 1, 6200, "Petrol", "ToyOTa", "ReD"));
-            testGaragePredator.ParkVehicle(new Car("UTI123", DateTime.Now, null, 1, 3900, "Petrol", "Mazda", "Black"));
-            testGaragePredator.ParkVehicle(new Car("XYZ456", DateTime.Now, null, 1, 2500, "Petrol", "Ford", "Blue"));
-            testGaragePredator.ParkVehicle(new Truck("LMN789", DateTime.Now, null, 2, 5000, "Diesel", "Volvo", 14000, "Red"));
-
-            //// 2. Execution: List all parked vehicles
-            //Console.WriteLine("Another new implementation \nMethod for GetAllParkedVehicles()\n");
-            //testGaragePredator.ListAllParkedVehicles();
-
-            //var parkedVehicles = testGaragePredator.GetAllParkedVehicles();
-            //Console.WriteLine("\nAnother new implementation \nParked Vehicles:");
-            //foreach (var vehicle in parkedVehicles)
-            //{
-            //    Console.WriteLine($"- {vehicle.Brand}, License Plate: {vehicle.LicensePlate}");
-            //}
-
-            //Console.WriteLine("\nAnother new implementation \nTrying out GetVehicle method, a vehicle with ABC123 license plate");
-            //Console.WriteLine(testGaragePredator.GetVehicle("ABC123"));
-
-            //Console.WriteLine("\nAnother new implementation \nDisplaying the capacity method/properties");
-
-            //Console.WriteLine($"\nGarage Capacity: {testGaragePredator.Capacity}");
-            //Console.WriteLine($"Available Slots in Garage: {testGaragePredator.AvailableSlots}");
-            //Console.WriteLine($"Is Garage Full: {testGaragePredator.IsFull}");
-
-            //// Trying out the search functions
-            //Console.WriteLine("\nAnother new implementation \nTrying out searching by type function");
-            //var blackCars = testGaragePredator.FindVehicles(v => v.Color == "Black" && v is Car);
-            //Console.WriteLine("Black Cars:");
-            //foreach (var car in blackCars)
-            //{
-            //    Console.WriteLine(car);
-            //}
-
-            //Console.WriteLine("\nAnother new implementation \nTrying out searching by brand Toyota");
-            //var toyotaVehicles = testGaragePredator.FindVehicles(v => v.Brand == "Toyota");
-            //Console.WriteLine("\nToyota Vehicles:");
-            //foreach (var vehicle in toyotaVehicles)
-            //{
-            //    Console.WriteLine(vehicle);
-            //}
-
-         #region Search Logic Testing
-
-            // Use the SearchSpecificationBuilder to construct the predicate
-            var builder = new SearchSpecificationBuilder<Vehicle>();
-            builder.AddCriteria(v => v.Brand.Equals("Toyota", StringComparison.OrdinalIgnoreCase));
-            builder.AddCriteria(v => v.Color.Equals("Red", StringComparison.OrdinalIgnoreCase));
-            var predicate = builder.Build(); 
-
-            // New Search logic, more advanced
-            // Find vehicles and print results
-            Console.WriteLine("\nSearching for all Toyotas that are Red (case-insensitive):");
-            var matchedVehicles = testGaragePredator.FindVehicles(predicate); // Don't forget to compile the predicate
-            foreach (var vehicle in matchedVehicles)
-            {
-                Console.WriteLine(vehicle);
-            }
-
-            #region bloated, old legacy search logic, missing a part, redundant.
-            //// Simple Search
-            //Console.WriteLine("Simple Search: All Toyotas");
-            //var toyotaVehicles = testGaragePredator.FindVehicles(v => v.Brand == "Toyota");
-            //foreach (var vehicle in toyotaVehicles)
-            //{
-            //    Console.WriteLine(vehicle);
-            //}
-
-            //// Compound Search
-            //Console.WriteLine("\nCompound Search: All Red Toyotas");
-            //var redToyotas = testGaragePredator.FindVehicles(v => v.Brand == "Toyota" && v.Color == "Red");
-            //foreach (var vehicle in redToyotas)
-            //{
-            //    Console.WriteLine(vehicle);
-            //}
-
-            //// No Matches
-            //Console.WriteLine("\nNo Matches: All Blue Ferraris");
-            //var blueFerraris = testGaragePredator.FindVehicles(v => v.Brand == "Ferrari" && v.Color == "Blue");
-            //foreach (var vehicle in blueFerraris)
-            //{
-            //    Console.WriteLine(vehicle);
-            //}
-
-            //// Complex Search
-            //Console.WriteLine("\nComplex Search: All cars with engine volume more than 3000 and are of Petrol fuel type");
-            //var complexSearch = testGaragePredator.FindVehicles(v => v is Car && v.EngineVolume > 3000 && v.FuelType == "Petrol");
-            //foreach (var vehicle in complexSearch)
-            //{
-            //    Console.WriteLine(vehicle);
-            //}
-            #endregion
-
-
-            #region Sampling the UI search options
-
-            // Todo: Fix Garage handler and then Implement the UI methods and search functions.
-            /*
-            // Advanced user UI search
-            Console.WriteLine("Welcome to Vehicle Search!");
-            var selectedProperties = UI.DisplaySearchMenu();
-            if (selectedProperties.Count == 0)
-            {
-                Console.WriteLine("Exiting the search.");
-                return;
-            }
-            var searchCriteria = UI.CaptureCriteria(testGaragePredator, selectedProperties);
-            */
-
-            //// Sample Dictionary for vehicle colors
-            //Dictionary<int, string> vehicleColors = new Dictionary<int, string>
-            //{
-            //    { 1, "Red" },
-            //    { 2, "Blue" },
-            //    { 3, "Green" },
-            //    { 4, "Black" }
-            //};
-
-            //// Display options to the user
-            //Console.WriteLine("\nSelect vehicle colors:");
-            //foreach (var item in vehicleColors)
-            //{
-            //    Console.WriteLine($"{item.Key}. {item.Value}");
-            //}
-
-            //// Capture user selection
-            //var selectedColors = UI.CaptureUserSelection(vehicleColors);
-
-            //// Display the selected options to the user
-            //Console.WriteLine("\nYou selected:");
-            //foreach (var color in selectedColors)
-            //{
-            //    Console.WriteLine(color);
-            //}
-
-            //// ... Add more UI interactions as needed
-
-
-            #endregion
-
-
-
-            #endregion
-
-            // 3. Validation: Manually check the console output to ensure the vehicles are listed correctly
-
-            #endregion
-            // Boundry to comment out for testing purposes
-            /*
+      
+            // Boundry to comment out for testing purposes, After this comment, main program starts properly.
+           
            try
            {
-               // Create a configuration builder
-               var builder = new ConfigurationBuilder()
+
+                #region Creation of Configuration Root and reading from appsettings.json file.
+                // Create a configuration builder
+                var builder = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())
                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                IConfigurationRoot configuration = builder.Build();
-
-               // Load billing rates into the Vehicle's BillingRates dictionary
-               Vehicle.InitializeBillingRates(configuration
+                #endregion
+                #region Creation of BillingRates Dictionary and reading from appsettings.json file the configuration.
+                // Load billing rates into the Vehicle's BillingRates dictionary
+                Vehicle.InitializeBillingRates(configuration
                    .GetSection("GarageSettings:BillingRates")
                    .Get<Dictionary<string, double>>() ?? new Dictionary<string, double>());
 
@@ -205,9 +50,11 @@ namespace Garage_Hangar_Exercise5
                {
                    Console.WriteLine("Error: Default billing rate is not specified in the configuration.");
                }
+                #endregion
 
-               // Read the garage capacity from the appsettings.json file
-               int garageCapacity = configuration.GetValue<int>("GarageSettings:Capacity");
+                #region Creation of Garage Capacity and reading from appsettings.json file.
+                // Read the garage capacity from the appsettings.json file
+                int garageCapacity = configuration.GetValue<int>("GarageSettings:Capacity");
 
                if (garageCapacity <= 0)
                {
@@ -246,16 +93,20 @@ namespace Garage_Hangar_Exercise5
                        }
                    }
                }
+                #endregion
 
-               // Create an instance of the garage with the capacity
-               Garage<Vehicle> garage = new Garage<Vehicle>(garageCapacity);
+                #region Creation of garage instance and printing the garage capacity.
 
-               // Print the garage capacity
-               Console.WriteLine($"Garage initialized with capacity: {garageCapacity}");
-           }
+                // Create an instance of the garage with the specified capacity by the user or appsettings.json
+                Garage<Vehicle> garage = new Garage<Vehicle>(garageCapacity);
 
-           #region Exeception Handling, keep updated
+                // Print the garage capacity
+                Console.WriteLine($"Garage initialized with capacity: {garageCapacity}");
+                #endregion
+            }
+
            catch (Exception ex)
+           #region Exeception Handling, in case of missing or corrupted Appsettings.json file, keep updated.
            {
                Console.WriteLine($"An error occurred: {ex.Message}");
                Console.WriteLine("The configuration file is missing or corrupted. What would you like to do?");
@@ -319,10 +170,10 @@ namespace Garage_Hangar_Exercise5
                        }
                    }
                    // If the user enters "no", it simply proceeds with the default value set earlier.
-                   #endregion
                }
            }  
-            */
+                   #endregion
+            
             // Boundry to comment out for testing purposes
         }
     }

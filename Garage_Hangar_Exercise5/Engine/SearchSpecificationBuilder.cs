@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Engine
 {
+
+    /* //Revisit Lambda function in the future, focus on basic searches for now.
     public class SearchSpecificationBuilder<T>
     {
         private List<Expression<Func<T, bool>>> _criteria = new List<Expression<Func<T, bool>>>();
@@ -79,4 +81,13 @@ namespace Garage_Hangar_Exercise5.Engine
             }
         }
     }
+
+    */
+
+    //Part of the code used in different place
+    //// Use the SearchSpecificationBuilder to construct the predicate
+    //var builder = new SearchSpecificationBuilder<Vehicle>();
+    //builder.AddCriteria(v => v.Brand.Equals("Toyota", StringComparison.OrdinalIgnoreCase));
+    //        builder.AddCriteria(v => v.Color.Equals("Red", StringComparison.OrdinalIgnoreCase));
+    //        var predicate = builder.Build();
 }
