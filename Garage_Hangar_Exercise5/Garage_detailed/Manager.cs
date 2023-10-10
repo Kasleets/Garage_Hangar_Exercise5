@@ -130,60 +130,152 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             ShowParkVehicleMeny();
             var choice = Console.ReadLine();
 
-            var properties = this.GetType().GetProperties()
-                            .Where(p => p.Name != "Cost");  // Exclude the Cost property, to avoid system stack overflow when calling ToString() on the derived classes 
+            // Determine the type of vehicle based on user choice
+            Type? vehicleType = choice switch
+            {
+                "1" => typeof(Car),
+                "2" => typeof(Bus),
+                "3" => typeof(Truck),
+                "4" => typeof(Airplane),
+                "5" => typeof(Boat),
+                "6" => typeof(Motorcycle),
+                "7" => typeof(Bicycle),
+                
+                 _ => null
+            };
 
-            // Assuming there is a collection called "myCollection" and we want to filter it based on a property called "someProperty" equal to a specific value "someValue"
+            if (vehicleType == null)
+            {
+                Console.WriteLine("Invalid choice.");
+                return;
+            }
 
-           // var filteredCollection = myCollection.Where(item => item.someProperty == someValue);
-            var propertyValues = properties.Select(p =>
-           { 
-               {
-
-                   var value = p.GetValue(this);
-                   // Check for ExitTime and adjust the value if it's null
-                   if (p.Name == "ExitTime" && value == null)
-                   {
-                       value = "Still Parked";
-                   }
-                   return $"\n{p.Name}: {value}";
-               }
-
-           });
-
-
-            // ... Capture other properties as needed
+            // Get properties of the chosen vehicle type
+            var properties = vehicleType.GetProperties()
+                                        .Where(p => p.Name != "ExitTime" && p.CanWrite) // Exclude ExitTime and read-only properties
+                                        .ToList();
 
             // Use LINQ to capture user input for each property
-            var userInput = propertyValues.ToDictionary( 
-                propName => propName,
-                propName =>
+            var userInput = properties.ToDictionary(
+                prop => prop.Name,
+                prop =>
                 {
-                    Console.WriteLine($"Enter {propName}:");
-                    return Console.ReadLine();
+                    string input;
+                    bool isValid;
+                    do
+                    {
+
+                    
+                    Console.WriteLine($"Enter {prop.Name}:");
+                        input = Console.ReadLine();
+                        isValid = ValidateInput(input, prop.PropertyType);
+                        if(!isValid)
+                        {
+                            Console.WriteLine($"Invalid input for {prop.Name}. Please try again.");
+                        }
+                        } while (!isValid);
+                    return input;
                 });
 
-            Vehicle vehicleToPark = choice switch
+
+            // Create the vehicle instance using reflection 
+            Vehicle? vehicleToPark = choice switch
+
             {
-                "1" => new Car(
-                            userInput["LicensePlate"],
-                            DateTime.Now,
-                            null,
-                            int.Parse(userInput["NumberOfEngines"]),
-                            double.Parse(userInput["EngineVolume"]),
-                            userInput["FuelType"],
-                            userInput["Brand"],
-                            userInput["Color"]
-                        ),
-
+                // Car
+                "1" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"]
+                                ),                
+                // Bus
+                "2" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    int.Parse(userInput["NumberOfSeats"])
+                                ), 
+                // Truck
+                "3" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    double.Parse(userInput["Length"])
+                                ), 
+                // Airplane                
+                "4" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    int.Parse(userInput["NumberOfWings"])
+                                ),         
+                // Boat
+                "5" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    int.Parse(userInput["NumberOfFloors"])
+                                ),      
+                // Motorcycle
+                "6" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    int.Parse(userInput["StrokeEngine"])
+                                ),     
+                // Bicycle
+                "7" => (Vehicle?)Activator.CreateInstance(vehicleType,
+                                    userInput["LicensePlate"],
+                                    DateTime.Now,
+                                    null,
+                                    int.Parse(userInput["NumberOfEngines"]),
+                                    double.Parse(userInput["EngineVolume"]),
+                                    userInput["FuelType"],
+                                    userInput["Brand"],
+                                    userInput["Color"],
+                                    userInput["Type"]
+                                ),
                 // ... handle other vehicle types similarly
-
                 _ => null
-            } ;
+            };
 
             if (vehicleToPark != null && garage.ParkVehicle(vehicleToPark))
             {
                 Console.WriteLine("Vehicle parked successfully!");
+            }
+            else if (vehicleToPark == null)
+            {
+                Console.WriteLine("Failed to create the vehicle. Please try again. You've input null value.");
             }
             else
             {
@@ -191,10 +283,35 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             }
         }
 
+        private bool ValidateInput(string input, Type propertyType)
+        {
+            if (propertyType == typeof(int))
+            {
+                return int.TryParse(input, out _);
+            }
+            else if (propertyType == typeof(double))
+            {
+                return double.TryParse(input, out _);
+            }
+            else if (propertyType == typeof(string))
+            {
+                return !string.IsNullOrWhiteSpace(input);
+            }
+            
+            // Note: expand if needed to support other types
+            return true;
+        }
+
         private void ShowParkVehicleMeny()
         {
+            Console.WriteLine("What kind of Vehicle would you like to park?\n");
             Console.WriteLine("1. Car");
-            Console.WriteLine("2. Buss");
+            Console.WriteLine("2. Bus");
+            Console.WriteLine("3. Truck");
+            Console.WriteLine("4. Airplane");
+            Console.WriteLine("5. Boat");
+            Console.WriteLine("6. Motorcycle");
+            Console.WriteLine("7. Bicycle");
 
         }
 
