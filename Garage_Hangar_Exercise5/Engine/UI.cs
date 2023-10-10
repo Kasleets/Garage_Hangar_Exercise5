@@ -70,31 +70,33 @@ namespace Garage_Hangar_Exercise5.Engine
             }
             return values.ToList();
         }
-    
-        
 
-    //public static void DisplayMainMenu()
-    //    {
-    //        Console.WriteLine("Welcome to the Garage Manager!");
-    //        Console.WriteLine("Please select an option from the menu below:");
-    //        Console.WriteLine("1. Park a vehicle");
-    //        Console.WriteLine("2. Remove a vehicle");
-    //        Console.WriteLine("3. List all vehicles");
-    //        Console.WriteLine("4. Search for a vehicle");
-    //        Console.WriteLine("5. Exit");
-    //    }
+        #region Placeholders for now, old logic
 
-    //    public static void DisplayMainMenu2()
-    //    {
-    //        Console.WriteLine("Welcome to the Garage Manager!");
-    //        Console.WriteLine("Please select an option from the menu below:");
-    //        Console.WriteLine("1. Park a vehicle");
-    //        Console.WriteLine("2. Remove a vehicle");
-    //        Console.WriteLine("3. List all vehicles");
-    //        Console.WriteLine("4. Search for a vehicle");
-    //        Console.WriteLine("5. Exit");
-    //    }
-        
+        //public static void DisplayMainMenu()
+        //    {
+        //        Console.WriteLine("Welcome to the Garage Manager!");
+        //        Console.WriteLine("Please select an option from the menu below:");
+        //        Console.WriteLine("1. Park a vehicle");
+        //        Console.WriteLine("2. Remove a vehicle");
+        //        Console.WriteLine("3. List all vehicles");
+        //        Console.WriteLine("4. Search for a vehicle");
+        //        Console.WriteLine("5. Exit");
+        //    }
+
+        //    public static void DisplayMainMenu2()
+        //    {
+        //        Console.WriteLine("Welcome to the Garage Manager!");
+        //        Console.WriteLine("Please select an option from the menu below:");
+        //        Console.WriteLine("1. Park a vehicle");
+        //        Console.WriteLine("2. Remove a vehicle");
+        //        Console.WriteLine("3. List all vehicles");
+        //        Console.WriteLine("4. Search for a vehicle");
+        //        Console.WriteLine("5. Exit");
+        //    }
+
+        //Old logic, placeholder for now
+        /* 
         public static List<string> CaptureUserSelection(Dictionary<int, string> options)
         {
             List<int> selectedNumbers = new List<int>();
@@ -132,12 +134,12 @@ namespace Garage_Hangar_Exercise5.Engine
             return selectedNumbers.Select(n => options[n]).ToList();
         }
 
-        
+        */
 
 
 
         //Todo: Implement processing of a single vehicle with user input and logging
-        
+
         //public void ProcessCustomerVehicle()
         //{
         //     1. Gather input from the user (e.g., type of vehicle, time parked, etc.)
@@ -152,7 +154,7 @@ namespace Garage_Hangar_Exercise5.Engine
         //     4. Present the billing amount to the user or any other post-processing
         //    DisplayBillingToUser(billingAmount);
 
-             
+
         //}
 
         //private Vehicle GatherVehicleDetailsFromUser()
@@ -165,6 +167,6 @@ namespace Garage_Hangar_Exercise5.Engine
         //{
         //    // Code to display the billing amount to the user
         //}
-    
+        #endregion
     }
 }

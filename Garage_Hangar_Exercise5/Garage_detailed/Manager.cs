@@ -7,65 +7,125 @@ using System.Text;
 using System.Threading.Tasks;
 using Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types;
 using Bogus.DataSets;
+using Bogus;
+using System.Drawing;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
     public class Manager
     {
-        private Garage<Vehicle> garage = default!;
+        private Garage<Vehicle> _garage = default!;
 
-
+        public Manager(Garage<Vehicle> garage)
+        {
+            _garage = garage;
+        }
 
 
 
         internal void Run()
         {
-            // InitGarage();
-            ShowMainMeny();
+            // Adding a test sample of cars to the garage
+            AddBogusVehicles();
 
-            //Get input from user
-            string input = Console.ReadLine();
-            switch (input)
+            bool continueRunning = true;
+            while (continueRunning)
             {
-                case "1":
-                    ParkVehicle();
-                    break;
+                ShowMainMeny();
 
-                case "2":
-                    RemoveVehicle();
-                    break;
+                //Get input from user
 
-                case "3":
-                    SearchAllVehiclesByLicensePlate();
-                    break;
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        ParkVehicle();
+                        break;
 
-                case "4":
-                    SearchSpecificVehicleByLicensePlate();
-                    break;
+                    case "2":
+                        RemoveVehicle();
+                        break;
 
-                case "5":
-                    DisplayNumberOfParkedVehicles();
-                    break;
+                    case "3":
+                        SearchAllVehiclesByLicensePlate();
+                        break;
 
-                case "6":
-                    SearchVehiclesByProperties();
-                    break;
+                    case "4":
+                        SearchSpecificVehicleByLicensePlate();
+                        break;
 
-                case "0":
-                    Environment.Exit(0);
-                    break;
+                    case "5":
+                        DisplayNumberOfParkedVehicles();
+                        break;
 
-                default:
-                    Console.WriteLine("Invalid input, please try again");
-                    break;
+                    case "6":
+                        SearchVehiclesByProperties();
+                        break;
+                    case "000":
+                        Console.Clear();
+                        break;
+
+                    case "0":
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input, please try again");
+                        break;
+                }
             }
+        }
+
+        // Creating fake dataset of cars to test functions using Bogus.NuGet package
+        private void AddBogusVehicles(int numberOfVehicles = 10)
+        {
+            #region Old Bogus model, unusable because lacking the parameterless constructor
+            //for (int i = 0; i < numberOfVehicles; i++)
+            //{
+            //    var bogusCar = new Faker<Car>()
+            //        .RuleFor(c => c.LicensePlate, f => f.Vehicle.Random.String2(6, 6).ToUpper())
+            //        .RuleFor(c => c.EntryTime, f => f.Date.Past(100))
+            //        .RuleFor(c => c.ExitTime, f => null)
+            //        .RuleFor(c => c.NumberOfEngines, f => f.Random.Int(1, 4))
+            //        .RuleFor(c => c.FuelType, f => f.Vehicle.Fuel())
+            //        .RuleFor(c => c.Brand, f => f.Vehicle.Manufacturer())
+            //        .RuleFor(c => c.Color, f => f.Commerce.Color());
+
+            //    var car = bogusCar.Generate();
+            //    _garage.ParkVehicle(car);
+            //}
+            #endregion
+
+            for (int i = 0; i < numberOfVehicles; i++)
+            {
+                var bogusCar = new Faker<Car>()
+                    .CustomInstantiator(f => new Car(
+                        f.Vehicle.Random.String2(6, 6).ToUpper(),                  // LicensePlate
+                        f.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now),  // EntryTime
+                        null,                                                      // ExitTime
+                        f.Random.Int(1, 4),                                        // NumberOfEngines
+                        f.Random.Int(1000, 5000),                                  // EngineVolume
+                        f.Vehicle.Fuel(),                                          // FuelType
+                        f.Vehicle.Manufacturer(),                                  // Brand
+                        f.Commerce.Color()                                         // Color
+                    ));
+
+
+                var car = bogusCar.Generate();
+                _garage.ParkVehicle(car);
+            }
+
+            Console.WriteLine($"\n{numberOfVehicles} cars have been parked successfully!");
+
+            DisplayNumberOfParkedVehicles();
+
         }
 
         private void SearchVehiclesByProperties()
         {
             var properties = UI.DisplaySearchMenu();
-            var criteria = UI.CaptureCriteria(garage, properties);
-            var vehicles = garage.FindVehicles(v =>
+            var criteria = UI.CaptureCriteria(_garage, properties);
+            var vehicles = _garage.FindVehicles(v =>
             {
                 foreach (var property in criteria.Keys)
                 {
@@ -86,16 +146,16 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void DisplayNumberOfParkedVehicles()
         {
-            var allParkedVehicles = garage.GetAllParkedVehicles();
+            var allParkedVehicles = _garage.GetAllParkedVehicles();
             Console.WriteLine($"Total number of parked vehicles: {allParkedVehicles.Count()}");
-
+            Console.WriteLine("Amount of leftover parking spaces: " + (_garage.Capacity - allParkedVehicles.Count()));
         }
 
         private void SearchSpecificVehicleByLicensePlate()
         {
             Console.WriteLine("Enter the license plate of the vehicle you're looking for:");
             string licensePlate = Console.ReadLine();
-            var vehicle = garage.GetVehicle(licensePlate);
+            var vehicle = _garage.GetVehicle(licensePlate);
             if (vehicle != null)
             {
                 Console.WriteLine($"Found vehicle: {vehicle}");
@@ -108,14 +168,14 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void SearchAllVehiclesByLicensePlate()
         {
-            garage.ListAllParkedVehicles();
+            _garage.ListAllParkedVehicles();
         }
 
         private void RemoveVehicle()
         {
             Console.WriteLine("Enter the license plate of the vehicle to remove:");
             var licensePlate = Console.ReadLine();
-            if (garage.RemoveVehicle(licensePlate!))
+            if (_garage.RemoveVehicle(licensePlate!))
             {
                 Console.WriteLine("Vehicle removed successfully!");
             }
@@ -269,7 +329,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 _ => null
             };
 
-            if (vehicleToPark != null && garage.ParkVehicle(vehicleToPark))
+            if (vehicleToPark != null && _garage.ParkVehicle(vehicleToPark))
             {
                 Console.WriteLine("Vehicle parked successfully!");
             }
@@ -317,7 +377,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void ShowMainMeny()
         {
-            Console.WriteLine("Welcome to Garage Manager, what would you like to do?");
+            Console.WriteLine("\nWelcome to Garage Manager, what would you like to do?");
             Console.WriteLine("1. Park Vehicle");
             Console.WriteLine("2. Remove Vehicle");
             Console.WriteLine("3. Search all cars by their license plate");
@@ -325,15 +385,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             Console.WriteLine("5. See how many vehicles are parked inside a garage");
             Console.WriteLine("6. Look for a specific car based on its specifics");
             Console.WriteLine("0. Close the application");
+            Console.WriteLine("'000' Clears the console");
         }
 
-        private void InitGarage()
-        {
-            //Ask user for capacity
-            int capacity = 10;
-            garage = new Garage<Vehicle>(capacity);
-            
-        }
 
         // ... methods to manage multiple garages
     }

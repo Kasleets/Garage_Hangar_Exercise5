@@ -118,7 +118,7 @@ namespace Garage_Hangar_Exercise5
 
                 #region Development of proper program UI and menu.
 
-                var manager = new Manager();
+                var manager = new Manager(garage);
                 manager.Run();
 
 
