@@ -9,6 +9,7 @@ using Garage_Hangar_Exercise5.Garage_detailed.Vehicle_Types;
 using Bogus.DataSets;
 using Bogus;
 using System.Drawing;
+using System.ComponentModel.Design;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
@@ -35,7 +36,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
                 //Get input from user
 
-                string input = Console.ReadLine();
+                string input = Console.ReadLine()!;
                 switch (input)
                 {
                     case "1":
@@ -47,7 +48,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                         break;
 
                     case "3":
-                        SearchAllVehiclesByLicensePlate();
+                        DisplayAllParkedVehicles();
                         break;
 
                     case "4":
@@ -64,13 +65,18 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     case "000":
                         Console.Clear();
                         break;
+                    case "Bogus":
+                        AddBogusVehicles();
+                        break;
 
                     case "0":
                         Environment.Exit(0);
                         break;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid input, please try again");
+                        Console.ResetColor();
                         break;
                 }
             }
@@ -95,6 +101,14 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             //    _garage.ParkVehicle(car);
             //}
             #endregion
+            #region Expansion for Bogus model, to include all vehicle types
+            //    if (Vehicle_Types == typeof(Bus))
+            //    //Add Unique property for Bus
+            //    else if (Vehicle_Types == typeof(Truck))
+            //    //Add Unique property for Truck
+            
+            #endregion
+
 
             for (int i = 0; i < numberOfVehicles; i++)
             {
@@ -108,14 +122,22 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                         f.Vehicle.Fuel(),                                          // FuelType
                         f.Vehicle.Manufacturer(),                                  // Brand
                         f.Commerce.Color()                                         // Color
-                    ));
-
+                        ))
+                        .FinishWith((f, v) =>
+                        {
+                            if (v.FuelType == "Electric")
+                            {
+                                v.EngineVolume = 0;
+                            }
+                        });
 
                 var car = bogusCar.Generate();
                 _garage.ParkVehicle(car);
             }
 
-            Console.WriteLine($"\n{numberOfVehicles} cars have been parked successfully!");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"\n{numberOfVehicles} cars have been parked successfully!\n");
+            Console.ResetColor();
 
             DisplayNumberOfParkedVehicles();
 
@@ -124,8 +146,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         private void SearchVehiclesByProperties()
         {
             var properties = UI.DisplaySearchMenu();
-            var criteria = UI.CaptureCriteria(_garage, properties);
-            var vehicles = _garage.FindVehicles(v =>
+            var criteria =   UI.CaptureCriteria(_garage, properties);
+            var vehicles =   _garage.FindVehicles(v =>
             {
                 foreach (var property in criteria.Keys)
                 {
@@ -137,51 +159,83 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 }
                 return true;
             });
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Found {vehicles.Count()} vehicles based on the given criteria.");
+            Console.ResetColor();
+            Console.WriteLine("----------------------------------");
+
             foreach (var vehicle in vehicles)
             {
                 Console.WriteLine(vehicle);
+                Console.WriteLine("----------------------------------");
             }
         }
 
         private void DisplayNumberOfParkedVehicles()
         {
             var allParkedVehicles = _garage.GetAllParkedVehicles();
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Total number of parked vehicles: {allParkedVehicles.Count()}");
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Amount of leftover parking spaces: " + (_garage.Capacity - allParkedVehicles.Count()));
         }
 
         private void SearchSpecificVehicleByLicensePlate()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Enter the license plate of the vehicle you're looking for:");
-            string licensePlate = Console.ReadLine();
+            Console.ResetColor();
+            string licensePlate = Console.ReadLine()!;
             var vehicle = _garage.GetVehicle(licensePlate);
             if (vehicle != null)
             {
-                Console.WriteLine($"Found vehicle: {vehicle}");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Found vehicle: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(vehicle);
+                Console.ResetColor();
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No vehicle found with the given license plate.");
+                Console.ResetColor();
             }
         }
 
-        private void SearchAllVehiclesByLicensePlate()
+        private void DisplayAllParkedVehicles()
         {
             _garage.ListAllParkedVehicles();
         }
 
         private void RemoveVehicle()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Enter the license plate of the vehicle to remove:");
-            var licensePlate = Console.ReadLine();
-            if (_garage.RemoveVehicle(licensePlate!))
+            Console.ResetColor();
+            try
             {
-                Console.WriteLine("Vehicle removed successfully!");
+                var licensePlate = Console.ReadLine();
+                if (_garage.RemoveVehicle(licensePlate!))
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Vehicle removed successfully!");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Vehicle with the given license plate not found.");
+                    Console.ResetColor();
+                }
             }
-            else
+            catch (ArgumentException ex)
             {
-                Console.WriteLine("Vehicle with the given license plate not found.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return;
             }
         }
 
@@ -201,12 +255,21 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 "6" => typeof(Motorcycle),
                 "7" => typeof(Bicycle),
                 
-                 _ => null
+                
+                 _ => null,
+                                
             };
+
+            if (choice == "0") // Return to main menu
+            {
+                return;
+            }
 
             if (vehicleType == null)
             {
-                Console.WriteLine("Invalid choice.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid choice, going back to Main Menu.");
+                Console.ResetColor();
                 return;
             }
 
@@ -225,13 +288,16 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     do
                     {
 
-                    
-                    Console.WriteLine($"Enter {prop.Name}:");
-                        input = Console.ReadLine();
-                        isValid = ValidateInput(input, prop.PropertyType);
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"Enter {prop.Name}:");
+                        Console.ResetColor();
+                        input = Console.ReadLine()!;
+                        isValid = ValidateInput(input!, prop.PropertyType);
                         if(!isValid)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Invalid input for {prop.Name}. Please try again.");
+                            Console.ResetColor();
                         }
                         } while (!isValid);
                     return input;
@@ -331,18 +397,25 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
             if (vehicleToPark != null && _garage.ParkVehicle(vehicleToPark))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Vehicle parked successfully!");
+                Console.ResetColor();
             }
             else if (vehicleToPark == null)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Failed to create the vehicle. Please try again. You've input null value.");
+                Console.ResetColor();
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Failed to park the vehicle. Garage might be full.");
+                Console.ResetColor();
             }
         }
 
+        // Support method to validate user input for each property
         private bool ValidateInput(string input, Type propertyType)
         {
             if (propertyType == typeof(int))
@@ -364,7 +437,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void ShowParkVehicleMeny()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("What kind of Vehicle would you like to park?\n");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("1. Car");
             Console.WriteLine("2. Bus");
             Console.WriteLine("3. Truck");
@@ -372,20 +447,25 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             Console.WriteLine("5. Boat");
             Console.WriteLine("6. Motorcycle");
             Console.WriteLine("7. Bicycle");
-
+            Console.WriteLine("0. Return to Main Menu");
+            Console.ResetColor();
         }
 
         private void ShowMainMeny()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nWelcome to Garage Manager, what would you like to do?");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("1. Park Vehicle");
             Console.WriteLine("2. Remove Vehicle");
-            Console.WriteLine("3. Search all cars by their license plate");
+            Console.WriteLine("3. Display all parked vehicles");
             Console.WriteLine("4. Look for a specific car by its license plate ");
             Console.WriteLine("5. See how many vehicles are parked inside a garage");
             Console.WriteLine("6. Look for a specific car based on its specifics");
             Console.WriteLine("0. Close the application");
             Console.WriteLine("'000' Clears the console");
+
+            Console.ResetColor();
         }
 
 

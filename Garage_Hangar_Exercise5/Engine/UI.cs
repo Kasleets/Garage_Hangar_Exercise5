@@ -15,14 +15,20 @@ namespace Garage_Hangar_Exercise5.Engine
 
         public static List<string> DisplaySearchMenu()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nWhat would you like to search for?");
+            Console.ForegroundColor = ConsoleColor.Green;
+
             List<string> searchableProperties = new List<string> { "Brand", "Color", "FuelType", "NumberOfEngines" }; // We can expand this list later
             for (int i = 0; i < searchableProperties.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. {searchableProperties[i]}");
             }
+
             Console.WriteLine("0. Exit");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Enter the numbers corresponding to your choices, separated by commas.");
+            Console.ResetColor();
 
             var input = Console.ReadLine();
             var selectedIndices = input.Split(',').Select(x => int.Parse(x.Trim())).ToList();
@@ -38,13 +44,21 @@ namespace Garage_Hangar_Exercise5.Engine
             var criteria = new Dictionary<string, List<string>>();
             foreach (var property in properties)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"\nSelect values for {property}:");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Green;
                 var options = GetUniqueValuesForProperty(garage, property);
                 for (int i = 0; i < options.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {options[i]}");
                 }
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Enter the numbers corresponding to your choices, separated by commas.");
+                Console.ResetColor();
 
                 var input = Console.ReadLine();
                 var selectedIndices = input.Split(',').Select(x => int.Parse(x.Trim())).ToList();

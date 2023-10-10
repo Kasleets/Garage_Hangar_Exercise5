@@ -47,11 +47,15 @@ namespace Garage_Hangar_Exercise5
                // Ensure the "Default" rate exists before trying to print it
                if (Vehicle.BillingRates.ContainsKey("Default"))
                {
-                   Console.WriteLine($"Default billing rate is: {Vehicle.BillingRates["Default"]}");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"Default billing rate is: {Vehicle.BillingRates["Default"]}");
+                    Console.ResetColor();
                }
                else
                {
-                   Console.WriteLine("Error: Default billing rate is not specified in the configuration.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: Default billing rate is not specified in the configuration.");
+                    Console.ResetColor();
                }
                 #endregion
 
@@ -64,22 +68,31 @@ namespace Garage_Hangar_Exercise5
 
                if (garageCapacity <= 0)
                {
-                   Console.WriteLine("Warning: Default garage capacity from configuration is invalid. Using a fallback default of 50.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Warning: Default garage capacity from configuration is invalid. Using a fallback default of 50.");
+                    Console.ResetColor();
                    garageCapacity = 50; // A safe default
                }
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"Default garage capacity is: {garageCapacity}");
+                Console.ResetColor();
 
-               Console.WriteLine($"Default garage capacity is: {garageCapacity}");
-
-               // Ask user if they want to specify a custom garage capacity
-               // Todo: Consolide custom garage capacity code into a method
-               Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                // Ask user if they want to specify a custom garage capacity
+                // Todo: Consolide custom garage capacity code into a method
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                Console.ResetColor();
                var garageChoice = Console.ReadLine()!.Trim().ToLower();
 
                while (garageChoice != "yes" && garageChoice != "no")
                {
-                   Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
-                   Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
-                   garageChoice = Console.ReadLine()!.Trim().ToLower();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                    Console.ResetColor();
+                    garageChoice = Console.ReadLine()!.Trim().ToLower();
                }
 
                if (garageChoice == "yes")
@@ -87,7 +100,9 @@ namespace Garage_Hangar_Exercise5
                    bool validInput = false;
                    while (!validInput)
                    {
-                       Console.WriteLine("Enter the custom garage capacity:");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Enter the custom garage capacity:");
+                        Console.ResetColor();
                        if (int.TryParse(Console.ReadLine(), out int customCapacity) && customCapacity > 0)
                        {
                            garageCapacity = customCapacity;
@@ -95,8 +110,10 @@ namespace Garage_Hangar_Exercise5
                        }
                        else
                        {
-                           Console.WriteLine("Invalid capacity. Please enter a positive integer.");
-                       }
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Invalid capacity. Please enter a positive integer.");
+                            Console.ResetColor();
+                        }
                    }
                }
                 #endregion
@@ -110,7 +127,9 @@ namespace Garage_Hangar_Exercise5
                 Garage<Vehicle> garage = new Garage<Vehicle>(garageCapacity);
 
                 // Print the garage capacity
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"Garage initialized with capacity: {garageCapacity}");
+                Console.ResetColor();
                 #endregion
 
 
@@ -132,21 +151,30 @@ namespace Garage_Hangar_Exercise5
             catch (Exception ex)
            #region Exeception Handling, in case of missing or corrupted Appsettings.json file, keep updated.
            {
+               Console.ForegroundColor = ConsoleColor.Red;
                Console.WriteLine($"An error occurred: {ex.Message}");
-               Console.WriteLine("The configuration file is missing or corrupted. What would you like to do?");
+               Console.WriteLine("The configuration file is missing or corrupted.");
+               Console.ForegroundColor = ConsoleColor.Cyan;
+               Console.WriteLine("What would you like to do?");
                Console.WriteLine("1. Close application");
                Console.WriteLine("2. Use the default values for all vehicles");
+               Console.ResetColor();
+
                var choice = Console.ReadLine();
 
                if (choice == "1")
                {
-                   Console.WriteLine("Contact the IT-support immediately to resolve the issue.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Contact the IT-support immediately to resolve the issue.");
+                    Console.ResetColor();
                    return; // Closes the application
                }
 
                else if (choice == "2")
                {
-                   Console.WriteLine("Using default values for all vehicles, contact the IT-support immediately to secure the application.");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Using default values for all vehicles, contact the IT-support immediately to secure the application.");
+                    Console.ResetColor();
 
                    // Initialize BillingRates dictionary with default values
                    Vehicle.InitializeBillingRates(new Dictionary<string, double>
@@ -165,15 +193,20 @@ namespace Garage_Hangar_Exercise5
                    // Default garage capacity if not set in the corrupted/missing config
                    int garageCapacity = 50;
 
-                   // Ask user if they want to specify a custom garage capacity
-                   Console.WriteLine($"Default Garage Capacity is: {garageCapacity}, Would you like to specify a custom garage capacity? (yes/no)");
-                   var garageChoice = Console.ReadLine()!.Trim().ToLower();
+                    // Ask user if they want to specify a custom garage capacity
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Default Garage Capacity is: {garageCapacity}, Would you like to specify a custom garage capacity? (yes/no)");
+                    Console.ResetColor();
+                    var garageChoice = Console.ReadLine()!.Trim().ToLower();
 
                    while (garageChoice != "yes" && garageChoice != "no")
                    {
-                       Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
-                       Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
-                       garageChoice = Console.ReadLine()!.Trim().ToLower();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Would you like to specify a custom garage capacity? (yes/no)");
+                        Console.ResetColor();
+                        garageChoice = Console.ReadLine()!.Trim().ToLower();
                    }
 
                    if (garageChoice == "yes")
@@ -181,7 +214,9 @@ namespace Garage_Hangar_Exercise5
                        bool validInput = false;
                        while (!validInput)
                        {
-                           Console.WriteLine("Enter the custom garage capacity:");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("Enter the custom garage capacity:");
+                            Console.ResetColor();
                            if (int.TryParse(Console.ReadLine(), out int customCapacity) && customCapacity > 0)
                            {
                                garageCapacity = customCapacity;
@@ -189,7 +224,9 @@ namespace Garage_Hangar_Exercise5
                            }
                            else
                            {
-                               Console.WriteLine("Invalid capacity. Please enter a positive integer.");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid capacity. Please enter a positive integer.");
+                                Console.ResetColor();
                            }
                        }
                    }

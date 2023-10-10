@@ -89,7 +89,10 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         public void ListAllParkedVehicles()
         {
-            Console.WriteLine("List of All Parked Vehicles:");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nList of All Parked Vehicles:");
+            Console.ResetColor();
+
             Console.WriteLine("----------------------------------");
 
             int count = 0;
@@ -102,7 +105,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
             if (count == 0)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("The garage is currently empty.");
+                Console.ResetColor();
             }
         }
 
