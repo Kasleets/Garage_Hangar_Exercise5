@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
-    class Garage<T> : IEnumerable<T> where T : Vehicle
+    public class Garage<T> : IEnumerable<T> where T : Vehicle
     {
         private T?[] vehicles; // Note: We're allowing nullable values here.
 
