@@ -343,8 +343,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    int.Parse(userInput["NumberOfSeats"])
+                                    int.Parse(userInput["NumberOfSeats"]),
+                                    userInput["Color"]
                                 ), 
                 // Truck
                 "3" => (Vehicle?)Activator.CreateInstance(vehicleType,
@@ -355,8 +355,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    double.Parse(userInput["Length"])
+                                    double.Parse(userInput["Length"]),
+                                    userInput["Color"]
                                 ), 
                 // Airplane                
                 "4" => (Vehicle?)Activator.CreateInstance(vehicleType,
@@ -367,8 +367,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    int.Parse(userInput["NumberOfWings"])
+                                    int.Parse(userInput["NumberOfWings"]),
+                                    userInput["Color"]
                                 ),         
                 // Boat
                 "5" => (Vehicle?)Activator.CreateInstance(vehicleType,
@@ -391,8 +391,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    int.Parse(userInput["StrokeEngine"])
+                                    int.Parse(userInput["StrokeEngine"]),
+                                    userInput["Color"]
                                 ),     
                 // Bicycle
                 "7" => (Vehicle?)Activator.CreateInstance(vehicleType,
@@ -403,8 +403,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    userInput["Type"]
+                                    userInput["Type"],
+                                    userInput["Color"]
                                 ),
                 // ... handle other vehicle types similarly
                 _ => null
