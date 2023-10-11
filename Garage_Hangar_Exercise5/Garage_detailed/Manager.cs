@@ -22,12 +22,12 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             _garage = garage;
         }
 
-
+        
 
         internal void Run()
         {
             // Adding a test sample of cars to the garage
-            AddBogusVehicles();
+            // AddBogusVehicles();
 
             bool continueRunning = true;
             while (continueRunning)
@@ -65,9 +65,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     case "000":
                         Console.Clear();
                         break;
-                    case "Bogus":
-                        AddBogusVehicles();
-                        break;
+                    //case "Bogus":
+                    //    AddBogusVehicles();
+                    //    break;
 
                     case "0":
                         Environment.Exit(0);
@@ -85,22 +85,6 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         // Creating fake dataset of cars to test functions using Bogus.NuGet package
         private void AddBogusVehicles(int numberOfVehicles = 10)
         {
-            #region Old Bogus model, unusable because lacking the parameterless constructor
-            //for (int i = 0; i < numberOfVehicles; i++)
-            //{
-            //    var bogusCar = new Faker<Car>()
-            //        .RuleFor(c => c.LicensePlate, f => f.Vehicle.Random.String2(6, 6).ToUpper())
-            //        .RuleFor(c => c.EntryTime, f => f.Date.Past(100))
-            //        .RuleFor(c => c.ExitTime, f => null)
-            //        .RuleFor(c => c.NumberOfEngines, f => f.Random.Int(1, 4))
-            //        .RuleFor(c => c.FuelType, f => f.Vehicle.Fuel())
-            //        .RuleFor(c => c.Brand, f => f.Vehicle.Manufacturer())
-            //        .RuleFor(c => c.Color, f => f.Commerce.Color());
-
-            //    var car = bogusCar.Generate();
-            //    _garage.ParkVehicle(car);
-            //}
-            #endregion
             #region Expansion for Bogus model, to include all vehicle types
             //    if (Vehicle_Types == typeof(Bus))
             //    //Add Unique property for Bus
@@ -147,6 +131,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
         private void SearchVehiclesByProperties()
         {
+            
             var properties = UI.DisplaySearchMenu();
             var criteria =   UI.CaptureCriteria(_garage, properties);
             var vehicles =   _garage.FindVehicles(v =>
@@ -231,6 +216,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Vehicle removed successfully!");
                         Console.ResetColor();
+                    //    Vehicle.LogBilling();
                     }
                     else
 
