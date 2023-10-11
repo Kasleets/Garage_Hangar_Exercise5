@@ -27,7 +27,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         internal void Run()
         {
             // Adding a test sample of cars to the garage
-            // AddBogusVehicles();
+             AddBogusVehicles();
 
             bool continueRunning = true;
             while (continueRunning)
@@ -62,12 +62,14 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     case "6":
                         SearchVehiclesByProperties();
                         break;
+
                     case "000":
                         Console.Clear();
                         break;
-                    //case "Bogus":
-                    //    AddBogusVehicles();
-                    //    break;
+
+                    case "Bogus":
+                        AddBogusVehicles();
+                        break;
 
                     case "0":
                         Environment.Exit(0);
@@ -222,10 +224,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     if (_garage.RemoveVehicle(licensePlate!))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"Vehicle removed successfully! \nVehicle with license plate {vehicle.LicensePlate} was billed {vehicle.Cost}.");
+                        Console.WriteLine($"Vehicle removed successfully! \nVehicle with license plate {vehicle.LicensePlate} was billed {vehicle.Cost:F2}.");
                         Console.ResetColor();
                         Logger.LogMovement(vehicle.LicensePlate + " Removed");
-                        Logger.LogAccounting($"Vehicle with license plate {vehicle.LicensePlate} was billed {vehicle.Cost}.");
                     }
                     else
 

@@ -95,7 +95,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public virtual void LogBilling(TimeSpan timeParked)
         {
             var amount = CalculateBillingAmount(timeParked);
-            Logger.LogAccounting($"Vehicle with license plate {LicensePlate} was billed {amount}.");
+            Logger.LogAccounting($"Vehicle with license plate {LicensePlate} was billed {amount:F2}.");
         }
 
         private void ValidateConstructorParameters(string licensePlate, string fuelType, string brand)
