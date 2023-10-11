@@ -222,8 +222,10 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                     if (_garage.RemoveVehicle(licensePlate!))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Vehicle removed successfully!");
+                        Console.WriteLine($"Vehicle removed successfully! \nVehicle with license plate {vehicle.LicensePlate} was billed {vehicle.Cost}.");
                         Console.ResetColor();
+                        Logger.LogMovement(vehicle.LicensePlate + " Removed");
+                        Logger.LogAccounting($"Vehicle with license plate {vehicle.LicensePlate} was billed {vehicle.Cost}.");
                     }
                     else
 
@@ -410,7 +412,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             if (vehicleToPark != null && _garage.ParkVehicle(vehicleToPark))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Vehicle parked successfully!");
+                Console.WriteLine($"Vehicle parked successfully! \n"); // Todo: add more details what were added to the vehicle that parked
                 Console.ResetColor();
                 Logger.LogMovement(vehicleToPark.LicensePlate + " Parked");
             }

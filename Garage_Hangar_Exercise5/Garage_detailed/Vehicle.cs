@@ -87,7 +87,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 throw new InvalidOperationException("Default billing rate is not set.");
             }
 
-            return timeParked.TotalHours * rate;
+            double amount = timeParked.TotalHours * rate;
+            return Math.Round(amount, 2);
         }
 
         // Logging method
