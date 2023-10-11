@@ -207,16 +207,23 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             try
             {
                 var licensePlate = Console.ReadLine();
-                int? vehicleIndex = _garage.FindVehicleIndex(licensePlate!);
+               // int? vehicleIndex = _garage.FindVehicleIndex(licensePlate!);
+                var vehicle = _garage.GetVehicle(licensePlate!);
 
-                if (vehicleIndex.HasValue && vehicleIndex != -1)
+                //if (vehicleIndex.HasValue && vehicleIndex != -1)
+                if (vehicle != null)
                 {
+                    vehicle.ExitTime = DateTime.Now;
+
+                    TimeSpan timeParked = vehicle.ExitTime.Value - vehicle.EntryTime;
+                    vehicle.LogBilling(timeParked);
+
+
                     if (_garage.RemoveVehicle(licensePlate!))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Vehicle removed successfully!");
                         Console.ResetColor();
-                    //    Vehicle.LogBilling();
                     }
                     else
 
@@ -405,6 +412,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Vehicle parked successfully!");
                 Console.ResetColor();
+                Logger.LogMovement(vehicleToPark.LicensePlate + " Parked");
             }
             else if (vehicleToPark == null)
             {
