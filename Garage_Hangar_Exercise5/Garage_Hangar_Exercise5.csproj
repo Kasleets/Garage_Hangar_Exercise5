@@ -8,9 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Unit_Test\" />
-    <Folder Include="Config\" />
-    <Folder Include="Users\" />
+    <Compile Remove="Config\**" />
+    <Compile Remove="Unit_Test\**" />
+    <Compile Remove="Users\**" />
+    <EmbeddedResource Remove="Config\**" />
+    <EmbeddedResource Remove="Unit_Test\**" />
+    <EmbeddedResource Remove="Users\**" />
+    <None Remove="Config\**" />
+    <None Remove="Unit_Test\**" />
+    <None Remove="Users\**" />
   </ItemGroup>
 
   <ItemGroup>
