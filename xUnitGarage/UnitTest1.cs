@@ -56,5 +56,45 @@ namespace xUnitGarage
 
 
         }
+
+        [Theory]
+
+        [InlineData("VehicleType.Car", "POP193", null, null)]
+        [InlineData("VehicleType.Bus", "KOH183", 32, null)] // 32 seats for the bus
+        [InlineData("VehicleType.Airplane", "FLY456", null, 70)] // WingSpan of 70 for the airplane
+
+        public void Should_ParkVehicles_Successfully(string vehicleType, string licensePlate, int? numberOfSeats, int? wingSpan)
+        {
+            // Arrange
+            var garage = new Garage<Vehicle>(30);
+
+            Vehicle vehicle;
+
+            switch (vehicleType)
+            {
+                case "VehicleType.Car":
+                    vehicle = new Car(licensePlate, DateTime.Now, null, 1, 3900, "Petrol", "Brand", "Black");
+                    break;
+                case "VehicleType.Bus":
+                    vehicle = new Bus(licensePlate, DateTime.Now, null, 1, 6900, "Diesel", "Brand", numberOfSeats!.Value, "Blue");
+                    break;
+                case "VehicleType.Airplane":
+                    vehicle = new Airplane(licensePlate, DateTime.Now, null, 1, 12000, "JetFuel", "Brand", wingSpan!.Value, "White");
+                    break;
+                default:
+                    throw new ArgumentException("Invalid vehicle type");
+            }
+
+            // Act
+            bool isParked = garage.ParkVehicle(vehicle);
+
+            // Assert
+            Assert.True(isParked);
+
+            var retrievedVehicle = garage.GetVehicle(vehicle.LicensePlate);
+            Assert.NotNull(retrievedVehicle);
+            Assert.Equal(vehicle.LicensePlate, retrievedVehicle.LicensePlate);
+        }
+
     }
 }
