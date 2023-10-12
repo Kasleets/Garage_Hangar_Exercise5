@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
+
+    // Placeholder for multiple garages. Not implemented yet.
     public class Handler
     {
         private Garage<Vehicle> garage;
