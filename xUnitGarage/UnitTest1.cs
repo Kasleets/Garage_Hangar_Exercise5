@@ -115,7 +115,28 @@ namespace xUnitGarage
             Assert.False(isSecondCarParked); // Expecting this to be false since parking the second car should fail
         }
 
+        [Fact]
+        public void Should_RemoveVehicle_Car_Successfully()
+        {
+            // Arrange
+            
+            var garage = new Garage<Vehicle>(10); // Assuming a capacity of 10 vehicles for this test
+            var car = new Car("KIO666", DateTime.Now, null, 1, 3900, "Petrol", "Mazda", "Black");
 
+            garage.ParkVehicle(car);
+            
+            // Act
+
+            bool isRemoved = garage.RemoveVehicle(car.LicensePlate);
+
+            // Assert
+
+            var retrievedCar = garage.GetVehicle(car.LicensePlate);
+            Assert.Null(retrievedCar);
+            Assert.True(isRemoved);
+
+
+        }
 
     }
 }
