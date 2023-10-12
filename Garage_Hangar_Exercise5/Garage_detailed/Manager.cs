@@ -10,6 +10,7 @@ using Bogus.DataSets;
 using Bogus;
 using System.Drawing;
 using System.ComponentModel.Design;
+using Garage_Hangar_Exercise5.Garage_detailed.Interfaces;
 
 namespace Garage_Hangar_Exercise5.Garage_detailed
 {
@@ -291,6 +292,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             // Get properties of the chosen vehicle type
             var properties = vehicleType.GetProperties()
                                         .Where(p => p.Name != "ExitTime" && p.CanWrite) // Exclude ExitTime and read-only properties
+                                        .Where(p => p.Name != "EntryTime" && p.CanWrite) // Exclude EntryTime and read-only properties
                                         .ToList();
 
             // Use LINQ to capture user input for each property
@@ -306,15 +308,28 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine($"Enter {prop.Name}:");
                         Console.ResetColor();
+
                         input = Console.ReadLine()!;
                         isValid = ValidateInput(input!, prop.PropertyType);
-                        if(!isValid)
+
+                        if (prop.Name == "LicensePlate" && _garage.GetVehicle(input) != null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"A vehicle with license plate {input} is already parked. Please use a unique license plate.\nIf not available, input VIN.");
+                            Console.ResetColor();
+                            isValid = false; 
+                            continue; 
+                        }
+
+                        if (!isValid)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Invalid input for {prop.Name}. Please try again.");
                             Console.ResetColor();
                         }
+                        
                         } while (!isValid);
+                    
                     return input;
                 });
 
@@ -367,7 +382,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    int.Parse(userInput["NumberOfWings"]),
+                                    int.Parse(userInput["WingSpan"]),
                                     userInput["Color"]
                                 ),         
                 // Boat
@@ -379,8 +394,8 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                                     double.Parse(userInput["EngineVolume"]),
                                     userInput["FuelType"],
                                     userInput["Brand"],
-                                    userInput["Color"],
-                                    int.Parse(userInput["NumberOfFloors"])
+                                    int.Parse(userInput["NumberOfFloors"]),
+                                    userInput["Color"]
                                 ),      
                 // Motorcycle
                 "6" => (Vehicle?)Activator.CreateInstance(vehicleType,

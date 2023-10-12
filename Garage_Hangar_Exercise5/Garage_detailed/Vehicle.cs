@@ -39,11 +39,11 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
                           string brand,
                           string color)
         {
-            ValidateConstructorParameters(licensePlate, fuelType, brand);
+            ValidateConstructorParameters(licensePlate); //, fuelType, brand);
 
             if (!licensePlates.Add(licensePlate))
             {
-                throw new ArgumentException("License plate must be unique.");
+                throw new ArgumentException("License plate must be unique to a vehicle. Input VIN if not available.");
             }
 
             LicensePlate = licensePlate;
@@ -98,22 +98,23 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             Logger.LogAccounting($"Vehicle with license plate {LicensePlate} was billed {amount:F2}.");
         }
 
-        private void ValidateConstructorParameters(string licensePlate, string fuelType, string brand)
+        private void ValidateConstructorParameters(string licensePlate) //(, string fuelType, string brand)
         {
             if (string.IsNullOrEmpty(licensePlate))
             {
                 throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or empty.", nameof(licensePlate));
             }
 
-            if (string.IsNullOrEmpty(fuelType))
-            {
-                throw new ArgumentException($"'{nameof(fuelType)}' cannot be null or empty.", nameof(fuelType));
-            }
+            //if (string.IsNullOrEmpty(fuelType))
+            //{
+            //    throw new ArgumentException($"'{nameof(fuelType)}' cannot be null or empty.", nameof(fuelType));
+            //}
 
-            if (string.IsNullOrEmpty(brand))
-            {
-                throw new ArgumentException($"'{nameof(brand)}' cannot be null or empty.", nameof(brand));
-            }
+            //if (string.IsNullOrEmpty(brand))
+            //{
+            //    throw new ArgumentException($"'{nameof(brand)}' cannot be null or empty.", nameof(brand));
+            //}
+            
         }
 
         // Less memory efficient, but more future-proof that will display all of the unique properties of the derived classes
@@ -122,8 +123,9 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
         public override string ToString()
         {
             var properties = this.GetType().GetProperties()
-                            .Where(p => p.Name != "Cost");  // Exclude the Cost property, to avoid system stack overflow when calling ToString() on the derived classes 
-
+                            .Where(p => p.Name != "Cost")  // Exclude the Cost property, to avoid system stack overflow when calling ToString() on the derived classes 
+                            .Where(p => p.Name != "EntryTime"); // Exclude the EntryTime property, to avoid system stack overflow when calling ToString() on the derived classes
+          
             var propertyValues = properties.Select(p =>
             {
                 var value = p.GetValue(this);
