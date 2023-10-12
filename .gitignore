@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Garage_Hangar_Exercise5/Engine/SearchSpecificationBuilder.cs
+/Garage_Hangar_Exercise5/BloatTestBlock.cs
