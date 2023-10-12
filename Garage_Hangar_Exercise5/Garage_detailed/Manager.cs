@@ -103,14 +103,14 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             {
                 var bogusCar = new Faker<Car>()
                     .CustomInstantiator(f => new Car(
-                        f.Vehicle.Random.String2(6, 6).ToUpper(),                  // LicensePlate
-                        f.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now),  // EntryTime
-                        null,                                                      // ExitTime
-                        f.Random.Int(1, 4),                                        // NumberOfEngines
-                        f.Random.Int(10, 50) * 100,                                // EngineVolume
-                        f.Vehicle.Fuel(),                                          // FuelType
-                        f.PickRandom(brands),                                      // Brand
-                        f.PickRandom(colors)                                       // Color
+                        f.Vehicle.Random.String2(3).ToUpper() + f.Random.Number(100, 999).ToString(),       // LicensePlate
+                        f.Date.Between(DateTime.Now.AddDays(-10), DateTime.Now),                            // EntryTime
+                        null,                                                                               // ExitTime
+                        f.Random.Int(1, 4),                                                                 // NumberOfEngines
+                        f.Random.Int(10, 50) * 100,                                                         // EngineVolume
+                        f.Vehicle.Fuel(),                                                                   // FuelType
+                        f.PickRandom(brands),                                                               // Brand
+                        f.PickRandom(colors)                                                                // Color
                         ))
                         .FinishWith((f, v) =>
                         {
@@ -122,6 +122,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
 
                 var car = bogusCar.Generate();
                 _garage.ParkVehicle(car);
+                Logger.LogMovement(car.LicensePlate + " Bogus Vehicle Parked");
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;

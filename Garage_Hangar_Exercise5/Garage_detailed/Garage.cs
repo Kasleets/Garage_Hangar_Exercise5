@@ -99,7 +99,7 @@ namespace Garage_Hangar_Exercise5.Garage_detailed
             foreach (var vehicle in this)
             {
                 count++;
-                Console.WriteLine($"Vehicle {count}: {vehicle}");  // Using the overridden ToString method of the Vehicle class
+                Console.WriteLine($"Vehicle {count} is a {vehicle.GetType().Name}: {vehicle} ");  // Using the overridden ToString method of the Vehicle class
                 Console.WriteLine("----------------------------------");
             }
 
